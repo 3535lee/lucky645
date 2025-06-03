@@ -1,1 +1,305 @@
-if(!self.define){let e,s={};const n=(n,t)=>(n=new URL(n+".js",t).href,s[n]||new Promise((s=>{if("document"in self){const e=document.createElement("script");e.src=n,e.onload=s,document.head.appendChild(e)}else e=n,importScripts(n),s()})).then((()=>{let e=s[n];if(!e)throw new Error(`Module ${n} didn’t register its module`);return e})));self.define=(t,c)=>{const a=e||("document"in self?document.currentScript.src:"")||location.href;if(s[a])return;let i={};const r=e=>n(e,a),o={module:{uri:a},exports:i,require:r};s[a]=Promise.all(t.map((e=>o[e]||r(e)))).then((e=>(c(...e),i)))}}define(["./workbox-4754cb34"],(function(e){"use strict";importScripts(),self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"/_next/app-build-manifest.json",revision:"58612c84661d4642068cdc688fed46df"},{url:"/_next/static/95cU9sq3ynuVIB0etMfNT/_buildManifest.js",revision:"e492a26ae2f1d3a6490d085d1687739e"},{url:"/_next/static/95cU9sq3ynuVIB0etMfNT/_ssgManifest.js",revision:"b6652df95db52feb4daf4eca35380933"},{url:"/_next/static/chunks/201.6349805601835e42.js",revision:"6349805601835e42"},{url:"/_next/static/chunks/42.f73d9912321d9b35.js",revision:"f73d9912321d9b35"},{url:"/_next/static/chunks/4bd1b696-4395e28837e305c2.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/60-d3e7205db664ebf7.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/684-315c41d291b60a33.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/874-2da8707319d03e83.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/944.8c4113dc7f888d75.js",revision:"8c4113dc7f888d75"},{url:"/_next/static/chunks/app/_not-found/page-70f061133d914f90.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/api/telegram/route-2089736cede73579.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/api/update-lotto/route-e16f0cc4435edbaa.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/contact/page-debb252a59fb0d26.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/layout-241b1c267a8a3c87.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/lookup/page-8fc1892907a6e0fd.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/page-ecddbe0e0391b28d.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/recommend/page-94c52663a113358c.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/robots.txt/route-f4c3b4a98be1b4c8.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/sitemap.xml/route-be6245c6a548915e.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/app/verify/page-215ee653d693d487.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/framework-f593a28cde54158e.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/main-558e4adf6037e754.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/main-app-e1624b3c267186ee.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/pages/_app-da15c11dea942c36.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/pages/_error-cc3f077a18ea1793.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/chunks/polyfills-42372ed130431b0a.js",revision:"846118c33b2c0e922d7b3a7676f81f6f"},{url:"/_next/static/chunks/webpack-5ac4363e683f98d7.js",revision:"95cU9sq3ynuVIB0etMfNT"},{url:"/_next/static/css/02afc67d35f6dd0a.css",revision:"02afc67d35f6dd0a"},{url:"/_next/static/media/26a46d62cd723877-s.woff2",revision:"befd9c0fdfa3d8a645d5f95717ed6420"},{url:"/_next/static/media/55c55f0601d81cf3-s.woff2",revision:"43828e14271c77b87e3ed582dbff9f74"},{url:"/_next/static/media/581909926a08bbc8-s.woff2",revision:"f0b86e7c24f455280b8df606b89af891"},{url:"/_next/static/media/8e9860b6e62d6359-s.woff2",revision:"01ba6c2a184b8cba08b0d57167664d75"},{url:"/_next/static/media/97e0cb1ae144a2a9-s.woff2",revision:"e360c61c5bd8d90639fd4503c829c2dc"},{url:"/_next/static/media/df0a9ae256c0569c-s.woff2",revision:"d54db44de5ccb18886ece2fda72bdfe0"},{url:"/_next/static/media/e4af272ccee01ff0-s.p.woff2",revision:"65850a373e258f1c897a2b3d75eb74de"},{url:"/file.svg",revision:"d09f95206c3fa0bb9bd9fefabfd0ea71"},{url:"/globe.svg",revision:"2aaafa6a49b6563925fe440891e32717"},{url:"/icon-192x192.png",revision:"d41d8cd98f00b204e9800998ecf8427e"},{url:"/icon-512x512.png",revision:"d41d8cd98f00b204e9800998ecf8427e"},{url:"/manifest.json",revision:"7c102308b28076751065b7d22b136114"},{url:"/next.svg",revision:"8e061864f388b47f33a1c3780831193e"},{url:"/vercel.svg",revision:"c0af2f507b369b085b35ef4bbe3bcf1e"},{url:"/window.svg",revision:"a2760511c65806022ad20adf74370ff3"}],{ignoreURLParametersMatching:[]}),e.cleanupOutdatedCaches(),e.registerRoute("/",new e.NetworkFirst({cacheName:"start-url",plugins:[{cacheWillUpdate:async({request:e,response:s,event:n,state:t})=>s&&"opaqueredirect"===s.type?new Response(s.body,{status:200,statusText:"OK",headers:s.headers}):s}]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:gstatic)\.com\/.*/i,new e.CacheFirst({cacheName:"google-fonts-webfonts",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:31536e3})]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:googleapis)\.com\/.*/i,new e.StaleWhileRevalidate({cacheName:"google-fonts-stylesheets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,new e.StaleWhileRevalidate({cacheName:"static-font-assets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,new e.StaleWhileRevalidate({cacheName:"static-image-assets",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/image\?url=.+$/i,new e.StaleWhileRevalidate({cacheName:"next-image",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp3|wav|ogg)$/i,new e.CacheFirst({cacheName:"static-audio-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp4)$/i,new e.CacheFirst({cacheName:"static-video-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:js)$/i,new e.StaleWhileRevalidate({cacheName:"static-js-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:css|less)$/i,new e.StaleWhileRevalidate({cacheName:"static-style-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/data\/.+\/.+\.json$/i,new e.StaleWhileRevalidate({cacheName:"next-data",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:json|xml|csv)$/i,new e.NetworkFirst({cacheName:"static-data-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>{if(!(self.origin===e.origin))return!1;const s=e.pathname;return!s.startsWith("/api/auth/")&&!!s.startsWith("/api/")}),new e.NetworkFirst({cacheName:"apis",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:16,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>{if(!(self.origin===e.origin))return!1;return!e.pathname.startsWith("/api/")}),new e.NetworkFirst({cacheName:"others",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>!(self.origin===e.origin)),new e.NetworkFirst({cacheName:"cross-origin",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:3600})]}),"GET")}));
+const CACHE_NAME = 'lucky645-v2';
+const STATIC_CACHE = 'lucky645-static-v2';
+const DYNAMIC_CACHE = 'lucky645-dynamic-v2';
+
+// Only cache files that we know exist
+const urlsToCache = [
+  '/',
+  '/lookup',
+  '/verify',
+  '/recommend',
+  '/contact',
+  '/offline',
+  '/manifest.json'
+];
+
+// Static assets that should definitely exist
+const staticAssets = [
+  '/icon-192x192.png',
+  '/icon-512x512.png',
+  '/apple-touch-icon.png',
+  '/favicon.ico'
+];
+
+// Helper function to cache a URL with error handling
+async function cacheUrl(cache, url) {
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      await cache.put(url, response);
+      console.log(`Successfully cached: ${url}`);
+    } else {
+      console.warn(`Failed to cache ${url}: ${response.status}`);
+    }
+  } catch (error) {
+    console.warn(`Error caching ${url}:`, error);
+  }
+}
+
+// Install event - cache essential resources with error handling
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    (async () => {
+      try {
+        // Cache static pages
+        const cache = await caches.open(CACHE_NAME);
+        
+        // Cache pages individually to handle any failures
+        for (const url of urlsToCache) {
+          await cacheUrl(cache, url);
+        }
+        
+        // Cache static assets
+        const staticCache = await caches.open(STATIC_CACHE);
+        for (const asset of staticAssets) {
+          await cacheUrl(staticCache, asset);
+        }
+        
+        console.log('Service Worker: Cache setup complete');
+      } catch (error) {
+        console.error('Service Worker: Cache setup failed:', error);
+      }
+    })()
+  );
+  self.skipWaiting();
+});
+
+// Activate event - clean up old caches
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    (async () => {
+      try {
+        const cacheNames = await caches.keys();
+        const validCaches = [CACHE_NAME, STATIC_CACHE, DYNAMIC_CACHE];
+        
+        await Promise.all(
+          cacheNames.map(async (cacheName) => {
+            if (!validCaches.includes(cacheName)) {
+              console.log(`Deleting old cache: ${cacheName}`);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+        
+        console.log('Service Worker: Old caches cleaned up');
+      } catch (error) {
+        console.error('Service Worker: Cache cleanup failed:', error);
+      }
+    })()
+  );
+  self.clients.claim();
+});
+
+// Fetch event - serve from cache with network fallback
+self.addEventListener('fetch', (event) => {
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // Skip chrome-extension and other non-http(s) requests
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
+  // Handle different types of requests
+  if (event.request.url.includes('/api/')) {
+    // API calls - network first with error handling
+    event.respondWith(handleApiRequest(event.request));
+  } else if (isStaticAsset(event.request.url)) {
+    // Static assets - cache first
+    event.respondWith(handleStaticAsset(event.request));
+  } else {
+    // Pages - cache with network fallback
+    event.respondWith(handlePageRequest(event.request));
+  }
+});
+
+// Handle API requests with network-first strategy
+async function handleApiRequest(request) {
+  try {
+    const networkResponse = await fetch(request);
+    return networkResponse;
+  } catch (error) {
+    console.log('API request failed, returning error response');
+    return new Response(
+      JSON.stringify({ 
+        error: 'Network unavailable',
+        message: '네트워크에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.'
+      }), 
+      {
+        status: 503,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+  }
+}
+
+// Handle static assets with cache-first strategy
+async function handleStaticAsset(request) {
+  try {
+    // Try cache first
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    // Fetch from network and cache
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      const cache = await caches.open(STATIC_CACHE);
+      cache.put(request, networkResponse.clone());
+    }
+    
+    return networkResponse;
+  } catch (error) {
+    console.log('Static asset not available:', request.url);
+    return new Response('Asset not available offline', {
+      status: 503,
+      statusText: 'Service Unavailable'
+    });
+  }
+}
+
+// Handle page requests with cache fallback
+async function handlePageRequest(request) {
+  try {
+    // Try network first for fresh content
+    const networkResponse = await fetch(request);
+    
+    if (networkResponse.ok) {
+      // Cache successful responses
+      const cache = await caches.open(DYNAMIC_CACHE);
+      cache.put(request, networkResponse.clone());
+      return networkResponse;
+    }
+    
+    // If network fails, try cache
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    
+    // If both fail, return offline page for navigation requests
+    if (request.mode === 'navigate') {
+      const offlineResponse = await caches.match('/offline');
+      if (offlineResponse) {
+        return offlineResponse;
+      }
+    }
+    
+    return networkResponse;
+  } catch (error) {
+    // Network error - try cache
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    
+    // Last resort - offline page for navigation
+    if (request.mode === 'navigate') {
+      const offlineResponse = await caches.match('/offline');
+      if (offlineResponse) {
+        return offlineResponse;
+      }
+      
+      // Fallback offline HTML
+      return new Response(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Lucky645 - 오프라인</title>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+            .container { max-width: 400px; margin: 0 auto; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>오프라인 모드</h1>
+            <p>인터넷 연결이 끊어졌습니다.</p>
+            <button onclick="window.location.reload()">다시 시도</button>
+          </div>
+        </body>
+        </html>
+      `, {
+        headers: { 'Content-Type': 'text/html' }
+      });
+    }
+    
+    return new Response('Content not available offline', {
+      status: 503,
+      statusText: 'Service Unavailable'
+    });
+  }
+}
+
+// Helper function to identify static assets
+function isStaticAsset(url) {
+  return url.includes('.png') || 
+         url.includes('.jpg') || 
+         url.includes('.jpeg') || 
+         url.includes('.gif') || 
+         url.includes('.svg') || 
+         url.includes('.ico') || 
+         url.includes('.css') || 
+         url.includes('.js') ||
+         url.includes('/manifest.json');
+}
+
+// Background sync for future use
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'background-sync') {
+    console.log('Background sync triggered');
+    // Handle background sync when network is available
+  }
+});
+
+// Push notification handler
+self.addEventListener('push', (event) => {
+  const options = {
+    body: event.data ? event.data.text() : 'Lucky645 알림',
+    icon: '/icon-192x192.png',
+    badge: '/icon-192x192.png',
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1
+    },
+    actions: [
+      {
+        action: 'explore',
+        title: '확인하기',
+        icon: '/icon-192x192.png'
+      },
+      {
+        action: 'close',
+        title: '닫기'
+      }
+    ]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification('Lucky645', options)
+  );
+});
+
+// Notification click handler
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'explore') {
+    event.waitUntil(
+      clients.openWindow('/')
+    );
+  }
+});
+
+// Handle skip waiting message
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});

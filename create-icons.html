@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lucky645 Icon Generator</title>
+    <style>
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        .icon-container { margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Lucky645 Icon Generator</h1>
+    <p>This page generates the required PWA icons. Right-click each canvas and "Save image as" with the specified filename.</p>
+
+    <div class="icon-container">
+        <h3>Icon 192x192 (save as: icon-192x192.png)</h3>
+        <canvas id="icon192" width="192" height="192"></canvas>
+    </div>
+
+    <div class="icon-container">
+        <h3>Icon 512x512 (save as: icon-512x512.png)</h3>
+        <canvas id="icon512" width="512" height="512"></canvas>
+    </div>
+
+    <div class="icon-container">
+        <h3>Apple Touch Icon 180x180 (save as: apple-touch-icon.png)</h3>
+        <canvas id="apple180" width="180" height="180"></canvas>
+    </div>
+
+    <div class="icon-container">
+        <h3>Desktop Screenshot 1920x1080 (save as: screenshot-desktop.png)</h3>
+        <canvas id="desktop" width="960" height="540" style="width: 480px; height: 270px;"></canvas>
+    </div>
+
+    <div class="icon-container">
+        <h3>Mobile Screenshot 540x720 (save as: screenshot-mobile.png)</h3>
+        <canvas id="mobile" width="540" height="720" style="width: 270px; height: 360px;"></canvas>
+    </div>
+
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = size * 0.35;
+            
+            // Background
+            ctx.fillStyle = '#2563eb';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fbbf24';
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = size * 0.02;
+            ctx.stroke();
+            
+            // Text
+            ctx.fillStyle = '#1f2937';
+            ctx.font = `bold ${size * 0.15}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('L645', centerX, centerY);
+            
+            // Small decorative circles
+            const smallRadius = size * 0.03;
+            ctx.fillStyle = '#10b981';
+            ctx.beginPath();
+            ctx.arc(centerX - radius * 0.7, centerY - radius * 0.7, smallRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.arc(centerX + radius * 0.7, centerY - radius * 0.7, smallRadius, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function drawDesktopScreenshot(canvas) {
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Background
+            ctx.fillStyle = '#f9fafb';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Header
+            ctx.fillStyle = '#2563eb';
+            ctx.fillRect(0, 0, width, height * 0.12);
+            
+            // Lucky645 title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 36px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Lucky645', 50, height * 0.08);
+            
+            // Navigation
+            ctx.font = '18px Arial';
+            ctx.fillText('홈  당첨기록  번호검증  번호추천  문의하기', 300, height * 0.08);
+            
+            // Main content area
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(50, height * 0.15, width - 100, height * 0.7);
+            
+            // Title
+            ctx.fillStyle = '#1f2937';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Lucky645', width / 2, height * 0.25);
+            
+            ctx.font = '24px Arial';
+            ctx.fillText('로또 6/45 당첨번호 조회 및 추천 서비스', width / 2, height * 0.32);
+            
+            // Cards
+            const cardWidth = (width - 200) / 4;
+            const cardHeight = height * 0.25;
+            const cardY = height * 0.4;
+            
+            for (let i = 0; i < 4; i++) {
+                const cardX = 75 + i * (cardWidth + 10);
+                
+                // Card background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(cardX, cardY, cardWidth - 10, cardHeight);
+                ctx.strokeStyle = '#e5e7eb';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(cardX, cardY, cardWidth - 10, cardHeight);
+                
+                // Card icon
+                ctx.fillStyle = '#2563eb';
+                ctx.font = '48px Arial';
+                ctx.textAlign = 'center';
+                const icons = ['🔍', '✅', '🎯', '💬'];
+                ctx.fillText(icons[i], cardX + cardWidth/2 - 5, cardY + cardHeight/2 - 20);
+                
+                // Card text
+                ctx.fillStyle = '#1f2937';
+                ctx.font = 'bold 16px Arial';
+                const titles = ['당첨기록', '번호검증', '번호추천', '문의하기'];
+                ctx.fillText(titles[i], cardX + cardWidth/2 - 5, cardY + cardHeight/2 + 20);
+            }
+        }
+
+        function drawMobileScreenshot(canvas) {
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Background
+            ctx.fillStyle = '#f9fafb';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Header
+            ctx.fillStyle = '#2563eb';
+            ctx.fillRect(0, 0, width, height * 0.1);
+            
+            // Lucky645 title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Lucky645', 20, height * 0.06);
+            
+            // Hamburger menu
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(width - 50, height * 0.04, 20, 2);
+            ctx.fillRect(width - 50, height * 0.05, 20, 2);
+            ctx.fillRect(width - 50, height * 0.06, 20, 2);
+            
+            // Main content
+            ctx.fillStyle = '#1f2937';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Lucky645', width / 2, height * 0.2);
+            
+            ctx.font = '16px Arial';
+            ctx.fillText('로또 6/45 당첨번호 조회 및 추천 서비스', width / 2, height * 0.25);
+            
+            // Mobile cards (2x2 grid)
+            const cardWidth = (width - 60) / 2;
+            const cardHeight = height * 0.15;
+            
+            for (let i = 0; i < 4; i++) {
+                const col = i % 2;
+                const row = Math.floor(i / 2);
+                const cardX = 20 + col * (cardWidth + 20);
+                const cardY = height * 0.35 + row * (cardHeight + 20);
+                
+                // Card background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(cardX, cardY, cardWidth, cardHeight);
+                ctx.strokeStyle = '#e5e7eb';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(cardX, cardY, cardWidth, cardHeight);
+                
+                // Card content
+                ctx.fillStyle = '#2563eb';
+                ctx.font = '32px Arial';
+                ctx.textAlign = 'center';
+                const icons = ['🔍', '✅', '🎯', '💬'];
+                ctx.fillText(icons[i], cardX + cardWidth/2, cardY + cardHeight/2 - 10);
+                
+                ctx.fillStyle = '#1f2937';
+                ctx.font = 'bold 14px Arial';
+                const titles = ['당첨기록', '번호검증', '번호추천', '문의하기'];
+                ctx.fillText(titles[i], cardX + cardWidth/2, cardY + cardHeight/2 + 20);
+            }
+            
+            // Lottery balls section
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(20, height * 0.7, width - 40, height * 0.25);
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(20, height * 0.7, width - 40, height * 0.25);
+            
+            ctx.fillStyle = '#1f2937';
+            ctx.font = '18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('최신 당첨번호', width / 2, height * 0.75);
+            
+            // Draw lottery balls
+            const ballRadius = 20;
+            const ballY = height * 0.82;
+            const ballSpacing = (width - 80) / 6;
+            
+            for (let i = 0; i < 6; i++) {
+                const ballX = 50 + i * ballSpacing;
+                
+                ctx.beginPath();
+                ctx.arc(ballX, ballY, ballRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#fbbf24';
+                ctx.fill();
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                ctx.fillStyle = '#1f2937';
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText((i + 1).toString(), ballX, ballY + 5);
+            }
+        }
+
+        // Generate all icons and screenshots
+        drawIcon(document.getElementById('icon192'), 192);
+        drawIcon(document.getElementById('icon512'), 512);
+        drawIcon(document.getElementById('apple180'), 180);
+        drawDesktopScreenshot(document.getElementById('desktop'));
+        drawMobileScreenshot(document.getElementById('mobile'));
+    </script>
+</body>
+</html>

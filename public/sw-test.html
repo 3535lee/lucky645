@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Worker Test - Lucky645</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .test-item { margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .pass { background-color: #d4edda; border-color: #c3e6cb; }
+        .fail { background-color: #f8d7da; border-color: #f5c6cb; }
+        .loading { background-color: #fff3cd; border-color: #ffeaa7; }
+        h1 { color: #2563eb; }
+        .status { font-weight: bold; }
+        button { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Lucky645 Service Worker Test</h1>
+    <p>This page tests the service worker cache and all referenced files.</p>
+    
+    <div>
+        <button onclick="testServiceWorker()">Test Service Worker</button>
+        <button onclick="testCacheFiles()">Test Cache Files</button>
+        <button onclick="clearCaches()">Clear All Caches</button>
+    </div>
+    
+    <div id="test-results">
+        <div class="test-item loading">
+            <div class="status">🔄 Ready to test...</div>
+        </div>
+    </div>
+
+    <script>
+        const urlsToTest = [
+            '/',
+            '/lookup',
+            '/verify',
+            '/recommend',
+            '/contact',
+            '/offline',
+            '/manifest.json'
+        ];
+
+        const staticAssets = [
+            '/icon-192x192.png',
+            '/icon-512x512.png',
+            '/apple-touch-icon.png',
+            '/favicon.ico'
+        ];
+
+        async function testServiceWorker() {
+            const testContainer = document.getElementById('test-results');
+            testContainer.innerHTML = '<div class="test-item loading"><div class="status">🔄 Testing Service Worker...</div></div>';
+
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    
+                    const result = document.createElement('div');
+                    result.className = 'test-item pass';
+                    result.innerHTML = `
+                        <div class="status">✅ Service Worker</div>
+                        <div>Successfully registered: ${registration.scope}</div>
+                        <div>State: ${registration.active ? registration.active.state : 'Installing...'}</div>
+                    `;
+                    testContainer.appendChild(result);
+
+                    // Wait for service worker to be ready
+                    await navigator.serviceWorker.ready;
+                    
+                    const readyResult = document.createElement('div');
+                    readyResult.className = 'test-item pass';
+                    readyResult.innerHTML = `
+                        <div class="status">✅ Service Worker Ready</div>
+                        <div>Service worker is active and ready</div>
+                    `;
+                    testContainer.appendChild(readyResult);
+
+                } catch (error) {
+                    const result = document.createElement('div');
+                    result.className = 'test-item fail';
+                    result.innerHTML = `
+                        <div class="status">❌ Service Worker Registration Failed</div>
+                        <div>Error: ${error.message}</div>
+                    `;
+                    testContainer.appendChild(result);
+                }
+            } else {
+                const result = document.createElement('div');
+                result.className = 'test-item fail';
+                result.innerHTML = `
+                    <div class="status">❌ Service Worker Not Supported</div>
+                    <div>This browser doesn't support service workers</div>
+                `;
+                testContainer.appendChild(result);
+            }
+        }
+
+        async function testCacheFiles() {
+            const testContainer = document.getElementById('test-results');
+            testContainer.innerHTML = '<div class="test-item loading"><div class="status">🔄 Testing Cache Files...</div></div>';
+
+            const allFiles = [...urlsToTest, ...staticAssets];
+            
+            for (const url of allFiles) {
+                try {
+                    const response = await fetch(url, { method: 'HEAD' });
+                    
+                    const result = document.createElement('div');
+                    result.className = response.ok ? 'test-item pass' : 'test-item fail';
+                    result.innerHTML = `
+                        <div class="status">${response.ok ? '✅' : '❌'} ${url}</div>
+                        <div>Status: ${response.status} ${response.statusText}</div>
+                        ${response.ok ? `<div>Size: ${response.headers.get('content-length') || 'Unknown'} bytes</div>` : ''}
+                    `;
+                    testContainer.appendChild(result);
+                } catch (error) {
+                    const result = document.createElement('div');
+                    result.className = 'test-item fail';
+                    result.innerHTML = `
+                        <div class="status">❌ ${url}</div>
+                        <div>Error: ${error.message}</div>
+                    `;
+                    testContainer.appendChild(result);
+                }
+            }
+
+            // Test caches
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    
+                    const cacheResult = document.createElement('div');
+                    cacheResult.className = 'test-item pass';
+                    cacheResult.innerHTML = `
+                        <div class="status">📦 Cache Storage</div>
+                        <div>Active caches: ${cacheNames.length}</div>
+                        <div>${cacheNames.join(', ')}</div>
+                    `;
+                    testContainer.appendChild(cacheResult);
+
+                    for (const cacheName of cacheNames) {
+                        const cache = await caches.open(cacheName);
+                        const keys = await cache.keys();
+                        
+                        const detailResult = document.createElement('div');
+                        detailResult.className = 'test-item';
+                        detailResult.innerHTML = `
+                            <div class="status">📋 ${cacheName}</div>
+                            <div>Cached items: ${keys.length}</div>
+                            <div style="font-size: 12px;">${keys.map(req => req.url.replace(window.location.origin, '')).join(', ')}</div>
+                        `;
+                        testContainer.appendChild(detailResult);
+                    }
+                } catch (error) {
+                    const result = document.createElement('div');
+                    result.className = 'test-item fail';
+                    result.innerHTML = `
+                        <div class="status">❌ Cache Storage Error</div>
+                        <div>Error: ${error.message}</div>
+                    `;
+                    testContainer.appendChild(result);
+                }
+            }
+        }
+
+        async function clearCaches() {
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(cacheNames.map(name => caches.delete(name)));
+                    
+                    const result = document.createElement('div');
+                    result.className = 'test-item pass';
+                    result.innerHTML = `
+                        <div class="status">✅ Caches Cleared</div>
+                        <div>Deleted ${cacheNames.length} caches</div>
+                    `;
+                    document.getElementById('test-results').appendChild(result);
+                } catch (error) {
+                    const result = document.createElement('div');
+                    result.className = 'test-item fail';
+                    result.innerHTML = `
+                        <div class="status">❌ Clear Cache Failed</div>
+                        <div>Error: ${error.message}</div>
+                    `;
+                    document.getElementById('test-results').appendChild(result);
+                }
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testServiceWorker();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

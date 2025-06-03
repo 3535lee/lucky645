@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Test - Lucky645</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .test-item { margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .pass { background-color: #d4edda; border-color: #c3e6cb; }
+        .fail { background-color: #f8d7da; border-color: #f5c6cb; }
+        .loading { background-color: #fff3cd; border-color: #ffeaa7; }
+        h1 { color: #2563eb; }
+        .status { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Lucky645 PWA Validation Test</h1>
+    <p>This page tests all PWA components for Lucky645</p>
+    
+    <div id="test-results">
+        <div class="test-item loading">
+            <div class="status">🔄 Running PWA Tests...</div>
+        </div>
+    </div>
+
+    <script>
+        async function testPWA() {
+            const results = [];
+            const testContainer = document.getElementById('test-results');
+            testContainer.innerHTML = '';
+
+            // Test 1: Manifest
+            try {
+                const manifestResponse = await fetch('/manifest.json');
+                const manifest = await manifestResponse.json();
+                
+                if (manifest.name && manifest.short_name && manifest.icons && manifest.start_url) {
+                    results.push({
+                        test: 'Web App Manifest',
+                        status: 'pass',
+                        message: `✅ Manifest detected: ${manifest.name}`
+                    });
+                } else {
+                    results.push({
+                        test: 'Web App Manifest',
+                        status: 'fail',
+                        message: '❌ Manifest missing required fields'
+                    });
+                }
+            } catch (error) {
+                results.push({
+                    test: 'Web App Manifest',
+                    status: 'fail',
+                    message: '❌ Manifest not found or invalid'
+                });
+            }
+
+            // Test 2: Service Worker
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    results.push({
+                        test: 'Service Worker',
+                        status: 'pass',
+                        message: `✅ Service Worker registered: ${registration.scope}`
+                    });
+                } catch (error) {
+                    results.push({
+                        test: 'Service Worker',
+                        status: 'fail',
+                        message: '❌ Service Worker registration failed'
+                    });
+                }
+            } else {
+                results.push({
+                    test: 'Service Worker',
+                    status: 'fail',
+                    message: '❌ Service Worker not supported'
+                });
+            }
+
+            // Test 3: Icons
+            const iconTests = [
+                { url: '/icon-192x192.png', name: '192x192 Icon' },
+                { url: '/icon-512x512.png', name: '512x512 Icon' },
+                { url: '/apple-touch-icon.png', name: 'Apple Touch Icon' },
+                { url: '/favicon.ico', name: 'Favicon' }
+            ];
+
+            for (const iconTest of iconTests) {
+                try {
+                    const response = await fetch(iconTest.url, { method: 'HEAD' });
+                    if (response.ok) {
+                        results.push({
+                            test: iconTest.name,
+                            status: 'pass',
+                            message: `✅ ${iconTest.name} found`
+                        });
+                    } else {
+                        results.push({
+                            test: iconTest.name,
+                            status: 'fail',
+                            message: `❌ ${iconTest.name} not found (${response.status})`
+                        });
+                    }
+                } catch (error) {
+                    results.push({
+                        test: iconTest.name,
+                        status: 'fail',
+                        message: `❌ ${iconTest.name} load error`
+                    });
+                }
+            }
+
+            // Test 4: Screenshots
+            const screenshotTests = [
+                { url: '/screenshot-desktop.png', name: 'Desktop Screenshot' },
+                { url: '/screenshot-mobile.png', name: 'Mobile Screenshot' }
+            ];
+
+            for (const screenshotTest of screenshotTests) {
+                try {
+                    const response = await fetch(screenshotTest.url, { method: 'HEAD' });
+                    if (response.ok) {
+                        results.push({
+                            test: screenshotTest.name,
+                            status: 'pass',
+                            message: `✅ ${screenshotTest.name} found`
+                        });
+                    } else {
+                        results.push({
+                            test: screenshotTest.name,
+                            status: 'fail',
+                            message: `❌ ${screenshotTest.name} not found`
+                        });
+                    }
+                } catch (error) {
+                    results.push({
+                        test: screenshotTest.name,
+                        status: 'fail',
+                        message: `❌ ${screenshotTest.name} load error`
+                    });
+                }
+            }
+
+            // Test 5: HTTPS (for production)
+            if (location.protocol === 'https:') {
+                results.push({
+                    test: 'HTTPS',
+                    status: 'pass',
+                    message: '✅ Served over HTTPS'
+                });
+            } else {
+                results.push({
+                    test: 'HTTPS',
+                    status: 'fail',
+                    message: '❌ Not served over HTTPS (required for PWA in production)'
+                });
+            }
+
+            // Test 6: Installability
+            if ('BeforeInstallPromptEvent' in window || /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                results.push({
+                    test: 'Install Prompt',
+                    status: 'pass',
+                    message: '✅ PWA installable'
+                });
+            } else {
+                results.push({
+                    test: 'Install Prompt',
+                    status: 'loading',
+                    message: '⏳ Install prompt may appear after PWA criteria are met'
+                });
+            }
+
+            // Display results
+            testContainer.innerHTML = '';
+            results.forEach(result => {
+                const div = document.createElement('div');
+                div.className = `test-item ${result.status}`;
+                div.innerHTML = `
+                    <div class="status">${result.test}</div>
+                    <div>${result.message}</div>
+                `;
+                testContainer.appendChild(div);
+            });
+
+            // Summary
+            const passCount = results.filter(r => r.status === 'pass').length;
+            const totalCount = results.filter(r => r.status !== 'loading').length;
+            
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = `test-item ${passCount === totalCount ? 'pass' : 'fail'}`;
+            summaryDiv.innerHTML = `
+                <div class="status">PWA Test Summary</div>
+                <div>${passCount}/${totalCount} tests passed</div>
+                ${passCount === totalCount ? '<div>🎉 PWA is ready for installation!</div>' : '<div>⚠️ Some PWA requirements are not met</div>'}
+            `;
+            testContainer.appendChild(summaryDiv);
+        }
+
+        // Run tests when page loads
+        testPWA();
+
+        // Add install button functionality
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            const installDiv = document.createElement('div');
+            installDiv.className = 'test-item pass';
+            installDiv.innerHTML = `
+                <div class="status">Install PWA</div>
+                <button onclick="installPWA()" style="background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                    📱 Install Lucky645 PWA
+                </button>
+            `;
+            document.getElementById('test-results').appendChild(installDiv);
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('PWA installed');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+    </script>
+</body>
+</html>

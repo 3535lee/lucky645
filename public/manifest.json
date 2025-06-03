@@ -1,13 +1,20 @@
 {
-  "name": "Lucky645 - 로또 6/45 서비스",
+  "name": "Lucky645 - 로또 6/45 당첨번호 조회 및 추천 서비스",
   "short_name": "Lucky645",
-  "description": "로또 6/45 당첨번호 조회 및 추천 서비스",
+  "description": "로또 6/45 당첨번호 조회, 번호 검증, 추천 서비스. 1회부터 최신회까지 모든 당첨번호를 확인하세요.",
   "theme_color": "#2563eb",
   "background_color": "#f9fafb",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "orientation": "portrait",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "portrait-primary",
+  "categories": ["entertainment", "utilities", "games"],
+  "lang": "ko-KR",
+  "dir": "ltr",
+  "id": "/",
+  "version": "1.0.0",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -20,9 +27,66 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
-  "categories": ["entertainment", "utilities"],
-  "lang": "ko-KR",
-  "dir": "ltr"
+  "shortcuts": [
+    {
+      "name": "당첨기록 조회",
+      "short_name": "당첨기록",
+      "description": "로또 6/45 당첨기록 확인",
+      "url": "/lookup",
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "번호 검증",
+      "short_name": "검증",
+      "description": "선택한 번호 검증",
+      "url": "/verify",
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "번호 추천",
+      "short_name": "추천",
+      "description": "새로운 번호 추천",
+      "url": "/recommend",
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Lucky645 Desktop View"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Lucky645 Mobile View"
+    }
+  ]
 }
