@@ -96,7 +96,7 @@ export default function VerifyPage() {
             <label className="block text-sm font-medium text-gray-800 mb-3">
               {t('verify.input_label')}
             </label>
-            <div className="grid grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
               {numbers.map((number, index) => (
                 <input
                   key={index}
@@ -105,7 +105,7 @@ export default function VerifyPage() {
                   max="45"
                   value={number}
                   onChange={(e) => handleNumberChange(index, e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center text-gray-900 dark:text-white font-bold text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-center text-gray-900 dark:text-white font-bold text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 min-w-[3rem]"
                   placeholder={t('verify.input_placeholder').replace('{number}', (index + 1).toString())}
                 />
               ))}
