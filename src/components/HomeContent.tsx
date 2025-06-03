@@ -88,7 +88,7 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
           </div>
         </section>
       ) : latestResult ? (
-        <section className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border border-gray-200 dark:border-gray-700">
+        <section className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-8 shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {t('home.latest_result').replace('{round}', latestResult.round.toString())}
@@ -97,7 +97,31 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
           </div>
           
           <div className="mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
+            {/* Mobile Layout - Stacked */}
+            <div className="block md:hidden">
+              <div className="text-center mb-4">
+                <span className="text-base sm:text-lg font-medium text-gray-700 dark:text-gray-300">{t('home.winning_numbers')}</span>
+              </div>
+              {/* Extra small screens - smaller balls and tighter spacing */}
+              <div className="flex items-center justify-center gap-1 sm:gap-2 mb-3 px-2">
+                <LottoBall number={latestResult.num1} size="sm" />
+                <LottoBall number={latestResult.num2} size="sm" />
+                <LottoBall number={latestResult.num3} size="sm" />
+                <LottoBall number={latestResult.num4} size="sm" />
+                <LottoBall number={latestResult.num5} size="sm" />
+                <LottoBall number={latestResult.num6} size="sm" />
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-sm text-gray-500 dark:text-gray-400">+</span>
+                <div className="flex flex-col items-center">
+                  <LottoBall number={latestResult.bonus} size="sm" isBonus />
+                  <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('home.bonus')}</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Desktop Layout - Single Line */}
+            <div className="hidden md:flex items-center justify-center gap-3 mb-4">
               <span className="text-lg font-medium text-gray-700 dark:text-gray-300">{t('home.winning_numbers')}</span>
               <div className="flex gap-3">
                 <LottoBall number={latestResult.num1} size="lg" />
@@ -115,27 +139,27 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-lg border-l-4 border-yellow-400">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 p-4 sm:p-6 rounded-lg border-l-4 border-yellow-400">
               <div className="text-center">
                 <h3 className="text-lg font-bold text-yellow-800 mb-2">{t('home.first_prize')}</h3>
-                <p className="text-2xl font-bold text-yellow-600 mb-1">{formatPrize(latestResult.first_prize, language)}</p>
+                <p className="text-lg sm:text-2xl font-bold text-yellow-600 mb-1 break-words">{formatPrize(latestResult.first_prize, language)}</p>
                 <p className="text-yellow-700">{latestResult.first_winners}{t('home.winners_suffix')}</p>
               </div>
             </div>
             
-            <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg border-l-4 border-green-400">
+            <div className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-4 sm:p-6 rounded-lg border-l-4 border-green-400">
               <div className="text-center">
                 <h3 className="text-lg font-bold text-green-800 mb-2">{t('home.second_prize')}</h3>
-                <p className="text-2xl font-bold text-green-600 mb-1">{formatPrize(latestResult.second_prize, language)}</p>
+                <p className="text-lg sm:text-2xl font-bold text-green-600 mb-1 break-words">{formatPrize(latestResult.second_prize, language)}</p>
                 <p className="text-green-700">{latestResult.second_winners}{t('home.winners_suffix')}</p>
               </div>
             </div>
             
-            <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg border-l-4 border-purple-400">
+            <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 p-4 sm:p-6 rounded-lg border-l-4 border-purple-400">
               <div className="text-center">
                 <h3 className="text-lg font-bold text-purple-800 mb-2">{t('home.third_prize')}</h3>
-                <p className="text-2xl font-bold text-purple-600 mb-1">{formatPrize(latestResult.third_prize, language)}</p>
+                <p className="text-lg sm:text-2xl font-bold text-purple-600 mb-1 break-words">{formatPrize(latestResult.third_prize, language)}</p>
                 <p className="text-purple-700">{latestResult.third_winners}{t('home.winners_suffix')}</p>
               </div>
             </div>
