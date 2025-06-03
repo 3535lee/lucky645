@@ -41,7 +41,5 @@ src/
 │   └── utils.ts          # 유틸리티 함수
 └── types/                # TypeScript 타입 정의
 ```
-
 # lucky645
 Lotto 6/45 support web service
-f9e5e33af4a4c7f171908f59e8e10fd06979e787
