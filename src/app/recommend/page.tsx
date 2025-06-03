@@ -109,14 +109,18 @@ export default function RecommendPage() {
           <div className="grid gap-4">
             {recommendations.map((numbers, index) => (
               <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="text-lg font-bold text-gray-700 dark:text-gray-300">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex flex-col gap-3">
+                    <span className="text-lg font-bold text-gray-700 dark:text-gray-300 text-center sm:text-left">
                       {t('recommend.recommendation_number').replace('{number}', (index + 1).toString())}
                     </span>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2 md:gap-3 justify-center sm:justify-start max-w-sm md:max-w-lg mx-auto sm:mx-0">
                       {numbers.map((number, numIndex) => (
-                        <LottoBall key={numIndex} number={number} />
+                        <LottoBall 
+                          key={numIndex} 
+                          number={number} 
+                          size="xxl"
+                        />
                       ))}
                     </div>
                   </div>

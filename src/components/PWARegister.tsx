@@ -4,9 +4,16 @@ import { useEffect } from 'react';
 
 export default function PWARegister() {
   useEffect(() => {
+    // Only register service worker in production or when explicitly testing PWA
+    const isProduction = process.env.NODE_ENV === 'production';
+    const isPWATest = typeof window !== 'undefined' && 
+                      (window.location.search.includes('pwa=test') || 
+                       window.location.pathname === '/pwa-test.html');
+    
     if (
       typeof window !== 'undefined' &&
-      'serviceWorker' in navigator
+      'serviceWorker' in navigator &&
+      (isProduction || isPWATest)
     ) {
       // Only register service worker if we're in a secure context or localhost
       const isSecureContext = window.isSecureContext || 
@@ -18,11 +25,18 @@ export default function PWARegister() {
         return;
       }
 
-      // Register our custom service worker
-      navigator.serviceWorker
-        .register('/sw.js', { 
-          scope: '/',
-          updateViaCache: 'none' // Always check for updates
+      // Check if sw.js exists before registration
+      fetch('/sw.js', { method: 'HEAD' })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Service Worker file not found: ${response.status}`);
+          }
+          
+          // Register our custom service worker
+          return navigator.serviceWorker.register('/sw.js', { 
+            scope: '/',
+            updateViaCache: 'none' // Always check for updates
+          });
         })
         .then((registration) => {
           console.log('Service Worker registered successfully:', registration.scope);
@@ -57,7 +71,8 @@ export default function PWARegister() {
           });
         })
         .catch((error) => {
-          console.error('Service Worker registration failed:', error);
+          console.warn('Service Worker registration failed:', error.message);
+          // Don't throw error in development to prevent app crashes
         });
 
       // Listen for controllerchange event
@@ -71,6 +86,8 @@ export default function PWARegister() {
       navigator.serviceWorker.addEventListener('error', (error) => {
         console.error('Service Worker error:', error);
       });
+    } else if (typeof window !== 'undefined' && !isProduction && !isPWATest) {
+      console.log('Service Worker registration skipped in development mode');
     }
   }, []);
 

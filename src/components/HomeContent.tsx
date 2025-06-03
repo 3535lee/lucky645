@@ -124,16 +124,16 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
             <div className="hidden md:flex items-center justify-center gap-3 mb-4">
               <span className="text-lg font-medium text-gray-700 dark:text-gray-300">{t('home.winning_numbers')}</span>
               <div className="flex gap-3">
-                <LottoBall number={latestResult.num1} size="lg" />
-                <LottoBall number={latestResult.num2} size="lg" />
-                <LottoBall number={latestResult.num3} size="lg" />
-                <LottoBall number={latestResult.num4} size="lg" />
-                <LottoBall number={latestResult.num5} size="lg" />
-                <LottoBall number={latestResult.num6} size="lg" />
+                <LottoBall number={latestResult.num1} size="md" />
+                <LottoBall number={latestResult.num2} size="md" />
+                <LottoBall number={latestResult.num3} size="md" />
+                <LottoBall number={latestResult.num4} size="md" />
+                <LottoBall number={latestResult.num5} size="md" />
+                <LottoBall number={latestResult.num6} size="md" />
               </div>
               <span className="text-lg text-gray-500 dark:text-gray-400 mx-2">+</span>
               <div className="flex flex-col items-center">
-                <LottoBall number={latestResult.bonus} size="lg" isBonus />
+                <LottoBall number={latestResult.bonus} size="md" isBonus />
                 <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('home.bonus')}</span>
               </div>
             </div>
