@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/update-lotto",
-      "schedule": "0 19 * * 6"
+      "schedule": "0 12 * * 6"
     }
   ]
 }

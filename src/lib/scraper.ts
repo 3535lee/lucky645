@@ -21,7 +21,7 @@ interface ScrapedLottoData {
 
 export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> {
   try {
-    const response = await fetch('https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=');
+    const response = await fetch('https://dhlottery.co.kr/gameResult.do?method=byWin&wiselog=H_C_1_1');
     
     if (!response.ok) {
       throw new Error('Failed to fetch lotto data');
