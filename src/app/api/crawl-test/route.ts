@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { updateLottoDatabase } from '@/lib/scraper';
 
 export async function GET() {
