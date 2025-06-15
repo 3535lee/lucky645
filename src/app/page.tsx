@@ -1,3 +1,4 @@
+// Force rebuild - cache bypass
 import { getLatestResult } from '@/lib/supabase';
 import HomeContent from '@/components/HomeContent';
 
