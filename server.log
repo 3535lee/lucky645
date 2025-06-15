@@ -1,0 +1,38 @@
+
+> lucky645@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.3.3 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://172.20.10.4:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 668ms
+ ✓ Compiled /api/update-lotto in 376ms
+Cron job triggered at: 2025-06-15T05:35:58.062Z
+Starting lottery database update...
+Searching for latest lottery data...
+(node:30416) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Current database latest round: 1176
+Checking round 1177...
+Round 1177 not available yet
+No new rounds found
+Failed to scrape latest lotto data
+Cron job result: { success: false, message: 'Failed to scrape latest lotto data' }
+ GET /api/update-lotto 200 in 3725ms
+Cron job triggered at: 2025-06-15T05:36:26.497Z
+Starting lottery database update...
+Searching for latest lottery data...
+Current database latest round: 1176
+Checking round 1177...
+Round 1177 not available yet
+No new rounds found - database is up to date
+Database is already up to date with round 1176
+Cron job result: {
+  success: true,
+  message: 'Database is already up to date with round 1176'
+}
+ GET /api/update-lotto 200 in 841ms
+[?25h

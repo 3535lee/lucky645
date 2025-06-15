@@ -30,10 +30,12 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
+    console.log('Cron job triggered at:', new Date().toISOString());
     const result = await updateLottoDatabase();
+    console.log('Cron job result:', result);
     return NextResponse.json(result);
   } catch (error) {
-    console.error('Error in update-lotto API:', error);
+    console.error('Error in update-lotto cron:', error);
     return NextResponse.json(
       { 
         success: false, 

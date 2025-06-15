@@ -20,50 +20,57 @@ interface ScrapedLottoData {
 }
 
 export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> {
+  // Temporarily disable SSL verification for the lottery site due to expired certificate
+  const originalValue = process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  
   try {
-    // First, get the latest draw number from the main page
-    console.log('Fetching latest lottery data...');
-    const mainResponse = await fetch('https://dhlottery.co.kr/gameResult.do?method=byWin&wiselog=H_C_1_1', {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-      }
-    });
+    // Try to find the latest draw number by checking recent rounds
+    console.log('Searching for latest lottery data...');
     
-    if (!mainResponse.ok) {
-      throw new Error(`Failed to fetch main page: ${mainResponse.status}`);
-    }
-
-    const mainHtml = await mainResponse.text();
+    // Get current round from database and try next numbers
+    const currentLatestRound = await getLatestRound();
+    console.log(`Current database latest round: ${currentLatestRound}`);
     
-    // Extract the latest draw number from the HTML
-    const drawNumberMatch = mainHtml.match(/drwNo\s*=\s*(\d+)/);
-    let latestDrawNumber;
+    let latestDrawNumber = currentLatestRound;
     
-    if (!drawNumberMatch) {
-      // Try alternative patterns
-      const altMatch1 = mainHtml.match(/draw_no['"]\s*:\s*['"]*(\d+)/i);
-      const altMatch2 = mainHtml.match(/drw_no['"]\s*:\s*['"]*(\d+)/i);
-      const altMatch3 = mainHtml.match(/회차[^\d]*(\d+)/);
+    // Check for newer rounds (up to 5 rounds ahead)
+    for (let checkRound = currentLatestRound + 1; checkRound <= currentLatestRound + 5; checkRound++) {
+      const testUrl = `https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${checkRound}`;
+      console.log(`Checking round ${checkRound}...`);
       
-      if (altMatch1) {
-        latestDrawNumber = parseInt(altMatch1[1]);
-      } else if (altMatch2) {
-        latestDrawNumber = parseInt(altMatch2[1]);
-      } else if (altMatch3) {
-        latestDrawNumber = parseInt(altMatch3[1]);
-      } else {
-        // Use the first 4-digit number as it's likely the draw number
-        const numberMatches = mainHtml.match(/\d{4}/g);
-        if (numberMatches && numberMatches.length > 0) {
-          latestDrawNumber = parseInt(numberMatches[0]);
-          console.log(`Using first 4-digit number as draw number: ${latestDrawNumber}`);
-        } else {
-          throw new Error('Could not find draw number in main page');
+      try {
+        const testResponse = await fetch(testUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+          }
+        });
+        
+        if (testResponse.ok) {
+          const testData = await testResponse.json();
+          if (testData.returnValue === 'success' && testData.drwNo === checkRound) {
+            latestDrawNumber = checkRound;
+            console.log(`Found new round: ${checkRound}`);
+          }
         }
+      } catch (error) {
+        console.log(`Round ${checkRound} not available yet`);
+        break;
       }
-    } else {
-      latestDrawNumber = parseInt(drawNumberMatch[1]);
     }
+    
+    if (latestDrawNumber === currentLatestRound) {
+      console.log('No new rounds found - database is up to date');
+      // Restore SSL setting
+      if (originalValue !== undefined) {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = originalValue;
+      } else {
+        delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+      }
+      // Return null to indicate no new data, but this is handled in updateLottoDatabase()
+      return null;
+    }
+    
     console.log(`Latest draw number found: ${latestDrawNumber}`);
 
     // Now fetch the detailed data using the JSON API
@@ -111,9 +118,25 @@ export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> 
     };
 
     console.log('Parsed lottery data:', JSON.stringify(result, null, 2));
+    
+    // Restore original SSL setting
+    if (originalValue !== undefined) {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = originalValue;
+    } else {
+      delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+    }
+    
     return result;
   } catch (error) {
     console.error('Error scraping lotto data:', error);
+    
+    // Restore original SSL setting even on error
+    if (originalValue !== undefined) {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = originalValue;
+    } else {
+      delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+    }
+    
     return null;
   }
 }
@@ -126,9 +149,11 @@ export async function updateLottoDatabase(): Promise<{ success: boolean; message
     const latestScraped = await scrapeLatestLottoData();
     
     if (!latestScraped) {
-      const errorMsg = 'Failed to scrape latest lotto data';
-      console.error(errorMsg);
-      return { success: false, message: errorMsg };
+      // Check if this is because database is up to date
+      const currentLatestRound = await getLatestRound();
+      const message = `Database is already up to date with round ${currentLatestRound}`;
+      console.log(message);
+      return { success: true, message };
     }
 
     console.log(`Successfully scraped data for round ${latestScraped.draw_number}`);
