@@ -53,7 +53,7 @@ export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> 
             console.log(`Found new round: ${checkRound}`);
           }
         }
-      } catch (error) {
+      } catch {
         console.log(`Round ${checkRound} not available yet`);
         break;
       }
