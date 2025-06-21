@@ -1,4 +1,6 @@
 // import * as cheerio from 'cheerio'; // Will be used for future scraping features
+import fetch from 'node-fetch';
+import https from 'https';
 import { getSupabaseClient, getLatestRound } from './supabase';
 
 interface ScrapedLottoData {
@@ -20,27 +22,31 @@ interface ScrapedLottoData {
 }
 
 export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> {
-  // Temporarily disable SSL verification for the lottery site due to expired certificate
-  const originalValue = process.env.NODE_TLS_REJECT_UNAUTHORIZED;
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  // Create an HTTPS agent that bypasses SSL verification for the lottery site
+  // This is necessary because the lottery site has certificate issues
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false
+  });
   
   try {
     // Try to find the latest draw number by checking recent rounds
-    console.log('Searching for latest lottery data...');
+    console.log('[Scraper] Starting lottery data search at', new Date().toISOString());
+    console.log('[Scraper] Running in', process.env.NODE_ENV || 'development', 'environment');
     
     // Get current round from database and try next numbers
     const currentLatestRound = await getLatestRound();
-    console.log(`Current database latest round: ${currentLatestRound}`);
+    console.log(`[Scraper] Current database latest round: ${currentLatestRound}`);
     
     let latestDrawNumber = currentLatestRound;
     
     // Check for newer rounds (up to 5 rounds ahead)
     for (let checkRound = currentLatestRound + 1; checkRound <= currentLatestRound + 5; checkRound++) {
       const testUrl = `https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${checkRound}`;
-      console.log(`Checking round ${checkRound}...`);
+      console.log(`[Scraper] Checking round ${checkRound}...`);
       
       try {
         const testResponse = await fetch(testUrl, {
+          agent: httpsAgent,
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
           }
@@ -50,34 +56,29 @@ export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> 
           const testData = await testResponse.json();
           if (testData.returnValue === 'success' && testData.drwNo === checkRound) {
             latestDrawNumber = checkRound;
-            console.log(`Found new round: ${checkRound}`);
+            console.log(`[Scraper] Found new round: ${checkRound}`);
           }
         }
-      } catch {
-        console.log(`Round ${checkRound} not available yet`);
+      } catch (error) {
+        console.log(`[Scraper] Round ${checkRound} not available yet:`, error instanceof Error ? error.message : 'Unknown error');
         break;
       }
     }
     
     if (latestDrawNumber === currentLatestRound) {
-      console.log('No new rounds found - database is up to date');
-      // Restore SSL setting
-      if (originalValue !== undefined) {
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = originalValue;
-      } else {
-        delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
-      }
+      console.log('[Scraper] No new rounds found - database is up to date');
       // Return null to indicate no new data, but this is handled in updateLottoDatabase()
       return null;
     }
     
-    console.log(`Latest draw number found: ${latestDrawNumber}`);
+    console.log(`[Scraper] Latest draw number found: ${latestDrawNumber}`);
 
     // Now fetch the detailed data using the JSON API
     const apiUrl = `https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${latestDrawNumber}`;
-    console.log(`Fetching detailed data from: ${apiUrl}`);
+    console.log(`[Scraper] Fetching detailed data from: ${apiUrl}`);
     
     const apiResponse = await fetch(apiUrl, {
+      agent: httpsAgent,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
       }
@@ -88,7 +89,7 @@ export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> 
     }
 
     const data = await apiResponse.json();
-    console.log('API response:', JSON.stringify(data, null, 2));
+    console.log('[Scraper] API response received, returnValue:', data.returnValue, 'drwNo:', data.drwNo);
     
     if (data.returnValue !== 'success') {
       throw new Error(`Invalid response from lotto API: ${data.returnValue}`);
@@ -117,25 +118,16 @@ export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> 
       third_prize_winners: 0 // Will be filled from additional API call if available
     };
 
-    console.log('Parsed lottery data:', JSON.stringify(result, null, 2));
-    
-    // Restore original SSL setting
-    if (originalValue !== undefined) {
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = originalValue;
-    } else {
-      delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
-    }
+    console.log('[Scraper] Successfully parsed lottery data for round:', result.draw_number);
     
     return result;
   } catch (error) {
-    console.error('Error scraping lotto data:', error);
-    
-    // Restore original SSL setting even on error
-    if (originalValue !== undefined) {
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = originalValue;
-    } else {
-      delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
-    }
+    console.error('[Scraper] Error scraping lotto data:', error);
+    console.error('[Scraper] Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace',
+      type: error instanceof Error ? error.constructor.name : typeof error
+    });
     
     return null;
   }
@@ -143,7 +135,7 @@ export async function scrapeLatestLottoData(): Promise<ScrapedLottoData | null> 
 
 export async function updateLottoDatabase(): Promise<{ success: boolean; message: string; newRound?: number }> {
   try {
-    console.log('Starting lottery database update...');
+    console.log('[UpdateDB] Starting lottery database update at', new Date().toISOString());
     const startTime = Date.now();
     
     const latestScraped = await scrapeLatestLottoData();
@@ -152,25 +144,25 @@ export async function updateLottoDatabase(): Promise<{ success: boolean; message
       // Check if this is because database is up to date
       const currentLatestRound = await getLatestRound();
       const message = `Database is already up to date with round ${currentLatestRound}`;
-      console.log(message);
+      console.log('[UpdateDB]', message);
       return { success: true, message };
     }
 
-    console.log(`Successfully scraped data for round ${latestScraped.draw_number}`);
+    console.log(`[UpdateDB] Successfully scraped data for round ${latestScraped.draw_number}`);
     
     const currentLatestRound = await getLatestRound();
-    console.log(`Current database latest round: ${currentLatestRound}`);
+    console.log(`[UpdateDB] Current database latest round: ${currentLatestRound}`);
     
     if (latestScraped.draw_number <= currentLatestRound) {
       const message = `Database is up to date. Latest round: ${currentLatestRound}, Scraped round: ${latestScraped.draw_number}`;
-      console.log(message);
+      console.log('[UpdateDB]', message);
       return { 
         success: true, 
         message 
       };
     }
 
-    console.log(`Inserting new round ${latestScraped.draw_number} into database...`);
+    console.log(`[UpdateDB] Inserting new round ${latestScraped.draw_number} into database...`);
     const client = getSupabaseClient();
     const { error } = await client
       .from('lotto_results')
@@ -178,13 +170,13 @@ export async function updateLottoDatabase(): Promise<{ success: boolean; message
 
     if (error) {
       const errorMsg = `Failed to insert new lotto data: ${error.message}`;
-      console.error(errorMsg, error);
+      console.error('[UpdateDB]', errorMsg, error);
       throw new Error(errorMsg);
     }
 
     const duration = Date.now() - startTime;
     const successMessage = `Successfully added round ${latestScraped.draw_number} to database (took ${duration}ms)`;
-    console.log(successMessage);
+    console.log('[UpdateDB]', successMessage);
 
     return {
       success: true,
@@ -193,8 +185,8 @@ export async function updateLottoDatabase(): Promise<{ success: boolean; message
     };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : 'Unknown error occurred';
-    console.error('Error updating lotto database:', error);
-    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    console.error('[UpdateDB] Error updating lotto database:', error);
+    console.error('[UpdateDB] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     return {
       success: false,
       message: errorMsg
