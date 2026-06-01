@@ -115,7 +115,8 @@ export async function checkWinningNumbers(numbers: number[]): Promise<WinningRes
   const { data, error } = await supabase
     .from('lotto_results')
     .select('*')
-    .order('draw_number', { ascending: false });
+    .order('draw_number', { ascending: false })
+    .range(0, 9999);
 
   if (error) {
     throw new Error(`Failed to check winning numbers: ${error.message}`);
@@ -173,7 +174,8 @@ export async function checkWinningNumbers(numbers: number[]): Promise<WinningRes
 export async function getAllWinningCombinations(): Promise<number[][]> {
   const { data, error } = await supabase
     .from('lotto_results')
-    .select('number1, number2, number3, number4, number5, number6');
+    .select('number1, number2, number3, number4, number5, number6')
+    .range(0, 9999);
 
   if (error) {
     throw new Error(`Failed to fetch winning combinations: ${error.message}`);
