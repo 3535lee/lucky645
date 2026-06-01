@@ -1,7 +1,7 @@
 'use client';
 
 import { LottoResult } from '@/lib/supabase';
-import { formatDate, formatPrize } from '@/lib/utils';
+import { formatDate, formatPrize, perWinnerAmount } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LottoBall from './LottoBall';
 
@@ -38,18 +38,18 @@ export default function LottoResultCard({ result }: LottoResultProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
         <div className="bg-gray-50 p-3 rounded">
-          <div className="font-semibold text-gray-800">1등</div>
-          <div className="text-blue-600 font-bold">{formatPrize(result.first_prize, language)}</div>
+          <div className="font-semibold text-gray-800">1등 (1인당)</div>
+          <div className="text-blue-600 font-bold">{formatPrize(perWinnerAmount(result.first_prize, result.first_winners), language)}</div>
           <div className="text-gray-600">{result.first_winners}명</div>
         </div>
         <div className="bg-gray-50 p-3 rounded">
-          <div className="font-semibold text-gray-800">2등</div>
-          <div className="text-green-600 font-bold">{formatPrize(result.second_prize, language)}</div>
+          <div className="font-semibold text-gray-800">2등 (1인당)</div>
+          <div className="text-green-600 font-bold">{formatPrize(perWinnerAmount(result.second_prize, result.second_winners), language)}</div>
           <div className="text-gray-600">{result.second_winners}명</div>
         </div>
         <div className="bg-gray-50 p-3 rounded">
-          <div className="font-semibold text-gray-800">3등</div>
-          <div className="text-purple-600 font-bold">{formatPrize(result.third_prize, language)}</div>
+          <div className="font-semibold text-gray-800">3등 (1인당)</div>
+          <div className="text-purple-600 font-bold">{formatPrize(perWinnerAmount(result.third_prize, result.third_winners), language)}</div>
           <div className="text-gray-600">{result.third_winners}명</div>
         </div>
       </div>

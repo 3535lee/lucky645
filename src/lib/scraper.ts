@@ -26,7 +26,7 @@ function getDrawDate(drawNumber: number): string {
   return date.toISOString().split('T')[0];
 }
 
-async function scrapeFromNaver(drawNumber: number): Promise<ScrapedLottoData | null> {
+export async function scrapeFromNaver(drawNumber: number): Promise<ScrapedLottoData | null> {
   const query = encodeURIComponent(`${drawNumber}회 로또당첨번호`);
   const url = `https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=${query}`;
 
@@ -62,45 +62,41 @@ async function scrapeFromNaver(drawNumber: number): Promise<ScrapedLottoData | n
   if (bonusBall.length === 0) return null;
   const bonusNumber = parseInt(bonusBall.first().text().trim());
 
-  const winText = $('.win_text').text();
-  const prizeMatch = winText.match(/([\d,]+)원/);
-  const winnersMatch = winText.match(/(\d+)개/);
-
-  const firstPrizeAmount = prizeMatch ? parseInt(prizeMatch[1].replace(/,/g, '')) : 0;
-  const firstPrizeWinners = winnersMatch ? parseInt(winnersMatch[1]) : 0;
-
-  // Parse 2nd/3rd prize from the prize amount table
-  let secondPrizeAmount = 0;
-  let secondPrizeWinners = 0;
-  let thirdPrizeAmount = 0;
-  let thirdPrizeWinners = 0;
-
+  // Parse 1등/2등/3등 totals from the 당첨금액 table
   const parseNum = (s: string) => parseInt(s.replace(/[,개원\s]/g, '')) || 0;
+  let firstPrizeAmount = 0, firstPrizeWinners = 0;
+  let secondPrizeAmount = 0, secondPrizeWinners = 0;
+  let thirdPrizeAmount = 0, thirdPrizeWinners = 0;
 
   $('th[scope="row"]').each((_, th) => {
     const grade = $(th).text().trim();
-    if (grade !== '2등' && grade !== '3등') return;
+    if (!['1등', '2등', '3등'].includes(grade)) return;
 
-    const row = $(th).closest('tr');
-    const siblings = row.nextUntil('tr.first_line');
+    const headerRow = $(th).closest('tr');
+    const total = parseNum(headerRow.find('td').last().text()); // 총 당첨금 is in the same row as header
     let winners = 0;
-    let perPrize = 0;
 
+    const siblings = headerRow.nextUntil('tr.first_line');
     siblings.each((__, sib) => {
       const label = $(sib).find('td').first().text().trim();
       const value = $(sib).find('td').last().text().trim();
       if (label === '당첨 복권수') winners = parseNum(value);
-      if (label === '1개당 당첨금') perPrize = parseNum(value);
     });
 
-    if (grade === '2등') {
-      secondPrizeAmount = perPrize;
-      secondPrizeWinners = winners;
-    } else {
-      thirdPrizeAmount = perPrize;
-      thirdPrizeWinners = winners;
-    }
+    if (grade === '1등') { firstPrizeAmount = total; firstPrizeWinners = winners; }
+    else if (grade === '2등') { secondPrizeAmount = total; secondPrizeWinners = winners; }
+    else { thirdPrizeAmount = total; thirdPrizeWinners = winners; }
   });
+
+  // Fallback for 1등 if table parsing failed: use .win_text (per-winner * winners)
+  if (firstPrizeAmount === 0) {
+    const winText = $('.win_text').text();
+    const prizeMatch = winText.match(/([\d,]+)원/);
+    const winnersMatch = winText.match(/(\d+)개/);
+    const perWinner = prizeMatch ? parseInt(prizeMatch[1].replace(/,/g, '')) : 0;
+    firstPrizeWinners = winnersMatch ? parseInt(winnersMatch[1]) : 0;
+    firstPrizeAmount = perWinner * firstPrizeWinners;
+  }
 
   return {
     draw_number: drawNumber,

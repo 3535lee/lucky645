@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getLottoResults, LottoResult } from '@/lib/supabase-client';
 import LottoBall from '@/components/LottoBall';
-import { formatPrizeShort, formatDateShort } from '@/lib/utils';
+import { formatPrizeShort, formatDateShort, perWinnerAmount } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function LookupPage() {
@@ -122,19 +122,19 @@ export default function LookupPage() {
                     </td>
                     <td className="px-3 py-3 text-center">
                       <div className="text-xs">
-                        <div className="font-semibold text-yellow-700">{formatPrizeShort(result.first_prize, language)}</div>
+                        <div className="font-semibold text-yellow-700">{formatPrizeShort(perWinnerAmount(result.first_prize, result.first_winners), language)}</div>
                         <div className="text-gray-600 dark:text-gray-400">{result.first_winners}{t('home.winners_suffix')}</div>
                       </div>
                     </td>
                     <td className="px-3 py-3 text-center">
                       <div className="text-xs">
-                        <div className="font-semibold text-green-700">{formatPrizeShort(result.second_prize, language)}</div>
+                        <div className="font-semibold text-green-700">{formatPrizeShort(perWinnerAmount(result.second_prize, result.second_winners), language)}</div>
                         <div className="text-gray-600 dark:text-gray-400">{result.second_winners}{t('home.winners_suffix')}</div>
                       </div>
                     </td>
                     <td className="px-3 py-3 text-center">
                       <div className="text-xs">
-                        <div className="font-semibold text-purple-700">{formatPrizeShort(result.third_prize, language)}</div>
+                        <div className="font-semibold text-purple-700">{formatPrizeShort(perWinnerAmount(result.third_prize, result.third_winners), language)}</div>
                         <div className="text-gray-600 dark:text-gray-400">{result.third_winners}{t('home.winners_suffix')}</div>
                       </div>
                     </td>
@@ -172,17 +172,17 @@ export default function LookupPage() {
                 <div className="grid grid-cols-3 gap-3 text-xs">
                   <div className="text-center bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded">
                     <div className="font-semibold text-yellow-800">{t('lookup.table_first')}</div>
-                    <div className="font-medium text-yellow-700">{formatPrizeShort(result.first_prize, language)}</div>
+                    <div className="font-medium text-yellow-700">{formatPrizeShort(perWinnerAmount(result.first_prize, result.first_winners), language)}</div>
                     <div className="text-gray-600 dark:text-gray-400">{result.first_winners}{t('home.winners_suffix')}</div>
                   </div>
                   <div className="text-center bg-green-50 dark:bg-green-900/20 p-2 rounded">
                     <div className="font-semibold text-green-800">{t('lookup.table_second')}</div>
-                    <div className="font-medium text-green-700">{formatPrizeShort(result.second_prize, language)}</div>
+                    <div className="font-medium text-green-700">{formatPrizeShort(perWinnerAmount(result.second_prize, result.second_winners), language)}</div>
                     <div className="text-gray-600 dark:text-gray-400">{result.second_winners}{t('home.winners_suffix')}</div>
                   </div>
                   <div className="text-center bg-purple-50 dark:bg-purple-900/20 p-2 rounded">
                     <div className="font-semibold text-purple-800">{t('lookup.table_third')}</div>
-                    <div className="font-medium text-purple-700">{formatPrizeShort(result.third_prize, language)}</div>
+                    <div className="font-medium text-purple-700">{formatPrizeShort(perWinnerAmount(result.third_prize, result.third_winners), language)}</div>
                     <div className="text-gray-600 dark:text-gray-400">{result.third_winners}{t('home.winners_suffix')}</div>
                   </div>
                 </div>

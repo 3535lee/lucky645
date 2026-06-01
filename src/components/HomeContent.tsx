@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LottoBall from '@/components/LottoBall';
-import { formatDate, formatPrize } from '@/lib/utils';
+import { formatDate, formatPrize, perWinnerAmount } from '@/lib/utils';
 
 interface LottoResult {
   round: number;
@@ -143,7 +143,7 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
             <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 p-4 sm:p-6 rounded-lg border-l-4 border-yellow-400">
               <div className="text-center">
                 <h3 className="text-lg font-bold text-yellow-800 mb-2">{t('home.first_prize')}</h3>
-                <p className="text-lg sm:text-2xl font-bold text-yellow-600 mb-1 break-words">{formatPrize(latestResult.first_prize, language)}</p>
+                <p className="text-lg sm:text-2xl font-bold text-yellow-600 mb-1 break-words">{formatPrize(perWinnerAmount(latestResult.first_prize, latestResult.first_winners), language)}</p>
                 <p className="text-yellow-700">{latestResult.first_winners}{t('home.winners_suffix')}</p>
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
             <div className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-4 sm:p-6 rounded-lg border-l-4 border-green-400">
               <div className="text-center">
                 <h3 className="text-lg font-bold text-green-800 mb-2">{t('home.second_prize')}</h3>
-                <p className="text-lg sm:text-2xl font-bold text-green-600 mb-1 break-words">{formatPrize(latestResult.second_prize, language)}</p>
+                <p className="text-lg sm:text-2xl font-bold text-green-600 mb-1 break-words">{formatPrize(perWinnerAmount(latestResult.second_prize, latestResult.second_winners), language)}</p>
                 <p className="text-green-700">{latestResult.second_winners}{t('home.winners_suffix')}</p>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
             <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 p-4 sm:p-6 rounded-lg border-l-4 border-purple-400">
               <div className="text-center">
                 <h3 className="text-lg font-bold text-purple-800 mb-2">{t('home.third_prize')}</h3>
-                <p className="text-lg sm:text-2xl font-bold text-purple-600 mb-1 break-words">{formatPrize(latestResult.third_prize, language)}</p>
+                <p className="text-lg sm:text-2xl font-bold text-purple-600 mb-1 break-words">{formatPrize(perWinnerAmount(latestResult.third_prize, latestResult.third_winners), language)}</p>
                 <p className="text-purple-700">{latestResult.third_winners}{t('home.winners_suffix')}</p>
               </div>
             </div>

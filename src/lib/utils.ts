@@ -40,6 +40,11 @@ export function generateNeverWonNumbers(winningCombinations: number[][]): number
   return generateRandomNumbers();
 }
 
+export function perWinnerAmount(totalAmount: number, winners: number): number {
+  if (!winners || winners <= 0) return totalAmount;
+  return Math.floor(totalAmount / winners);
+}
+
 export function formatPrize(amount: number, language: string = 'ko'): string {
   if (language === 'ko') {
     if (amount >= 100000000) {

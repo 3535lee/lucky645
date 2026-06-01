@@ -134,20 +134,23 @@ export async function checkWinningNumbers(numbers: number[]): Promise<WinningRes
     let prizeType: '1등' | '2등' | '3등' | null = null;
     let prizeAmount = 0;
     
+    const perWinner = (total: number, winners: number) =>
+      winners > 0 ? Math.floor(total / winners) : total;
+
     // Check for 1st prize (6 numbers match)
     if (matchedCount === 6) {
       prizeType = '1등';
-      prizeAmount = row.first_prize_amount;
+      prizeAmount = perWinner(row.first_prize_amount, row.first_prize_winners);
     }
     // Check for 2nd prize (5 numbers + bonus)
     else if (matchedCount === 5 && hasBonus) {
       prizeType = '2등';
-      prizeAmount = row.second_prize_amount;
+      prizeAmount = perWinner(row.second_prize_amount, row.second_prize_winners);
     }
     // Check for 3rd prize (5 numbers)
     else if (matchedCount === 5) {
       prizeType = '3등';
-      prizeAmount = row.third_prize_amount;
+      prizeAmount = perWinner(row.third_prize_amount, row.third_prize_winners);
     }
     
     if (prizeType) {
