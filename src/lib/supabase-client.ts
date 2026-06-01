@@ -104,6 +104,23 @@ export type WinningResult = {
   bonusNumber: number;
 };
 
+async function fetchAllPaged<T>(table: string, columns: string, orderColumn: string, ascending: boolean): Promise<T[]> {
+  const PAGE = 1000;
+  const all: T[] = [];
+  for (let offset = 0; ; offset += PAGE) {
+    const { data, error } = await supabase
+      .from(table)
+      .select(columns)
+      .order(orderColumn, { ascending })
+      .range(offset, offset + PAGE - 1);
+    if (error) throw new Error(error.message);
+    if (!data || data.length === 0) break;
+    all.push(...(data as unknown as T[]));
+    if (data.length < PAGE) break;
+  }
+  return all;
+}
+
 export async function checkWinningNumbers(numbers: number[]): Promise<WinningResult[]> {
   if (numbers.length !== 6) {
     throw new Error('Please provide exactly 6 numbers');
@@ -111,15 +128,12 @@ export async function checkWinningNumbers(numbers: number[]): Promise<WinningRes
 
   const sortedNumbers = [...numbers].sort((a, b) => a - b);
 
-  // Get all lotto results with complete data
-  const { data, error } = await supabase
-    .from('lotto_results')
-    .select('*')
-    .order('draw_number', { ascending: false })
-    .range(0, 9999);
-
-  if (error) {
-    throw new Error(`Failed to check winning numbers: ${error.message}`);
+  // Get all lotto results with complete data (paginated to bypass 1000-row default limit)
+  let data: SupabaseRow[];
+  try {
+    data = await fetchAllPaged<SupabaseRow>('lotto_results', '*', 'draw_number', false);
+  } catch (e) {
+    throw new Error(`Failed to check winning numbers: ${e instanceof Error ? e.message : 'Unknown'}`);
   }
 
   const results: WinningResult[] = [];
@@ -172,14 +186,12 @@ export async function checkWinningNumbers(numbers: number[]): Promise<WinningRes
 }
 
 export async function getAllWinningCombinations(): Promise<number[][]> {
-  const { data, error } = await supabase
-    .from('lotto_results')
-    .select('number1, number2, number3, number4, number5, number6')
-    .range(0, 9999);
-
-  if (error) {
-    throw new Error(`Failed to fetch winning combinations: ${error.message}`);
-  }
+  const data = await fetchAllPaged<{ number1: number; number2: number; number3: number; number4: number; number5: number; number6: number }>(
+    'lotto_results',
+    'number1, number2, number3, number4, number5, number6',
+    'draw_number',
+    true
+  );
 
   return data.map(row => [
     row.number1 as number, 
