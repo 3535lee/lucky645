@@ -42,7 +42,11 @@
     "data_loading": "Memuat data...",
     "footer_latest": "Ronde Terbaru: Ronde {round}",
     "footer_database": "Database lotto berisi ronde 1 hingga {round}",
-    "footer_service": "Lucky645 - Layanan Pencarian dan Rekomendasi Nomor Lotto Korea 6/45"
+    "footer_service": "Lucky645 - Layanan Pencarian dan Rekomendasi Nomor Lotto Korea 6/45",
+    "cta_headline": "Siapa pemenang minggu depan?",
+    "cta_highlight": "Mungkin ANDA?",
+    "cta_subtext": "Jangan hanya bermimpi — wujudkan sekarang.",
+    "cta_button": "Pesan Nomor Anda Sekarang"
   },
   "lookup": {
     "title": "Riwayat Pemenang Lotto Korea 6/45",

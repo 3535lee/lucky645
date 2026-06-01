@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LottoBall from '@/components/LottoBall';
+import ConfettiCTA from '@/components/ConfettiCTA';
 import { formatDate, formatPrize, perWinnerAmount } from '@/lib/utils';
 
 interface LottoResult {
@@ -172,6 +173,8 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
           </div>
         </section>
       )}
+
+      {latestResult && <ConfettiCTA />}
 
       {/* Footer with database info */}
       <footer className="fixed bottom-0 left-0 right-0 bg-gray-900 dark:bg-gray-950 text-gray-100 dark:text-gray-200 py-3">

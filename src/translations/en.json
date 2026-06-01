@@ -42,7 +42,11 @@
     "data_loading": "Loading data...",
     "footer_latest": "Latest Round: Round {round}",
     "footer_database": "Lotto database contains rounds 1 to {round}",
-    "footer_service": "Lucky645 - Korean Lotto 6/45 Number Lookup and Recommendation Service"
+    "footer_service": "Lucky645 - Korean Lotto 6/45 Number Lookup and Recommendation Service",
+    "cta_headline": "Who will be next week's winner?",
+    "cta_highlight": "Could it be YOU?",
+    "cta_subtext": "Don't just dream it — make it happen.",
+    "cta_button": "Order Your Numbers Now"
   },
   "lookup": {
     "title": "Korean Lotto 6/45 Winning Records",
