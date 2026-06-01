@@ -4,10 +4,16 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 
 export type Language = 'ko' | 'en' | 'id';
 
+interface ExchangeRate {
+  unit: number;
+  krw_per_unit: number;
+}
+
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  rates: Record<string, ExchangeRate>;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -27,6 +33,7 @@ interface LanguageProviderProps {
 export function LanguageProvider({ children }: LanguageProviderProps) {
   const [language, setLanguageState] = useState<Language>('ko');
   const [translations, setTranslations] = useState<Record<string, unknown>>({});
+  const [rates, setRates] = useState<Record<string, ExchangeRate>>({});
 
   useEffect(() => {
     // Load saved language from localStorage
@@ -34,6 +41,16 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     if (savedLanguage && ['ko', 'en', 'id'].includes(savedLanguage)) {
       setLanguageState(savedLanguage);
     }
+  }, []);
+
+  useEffect(() => {
+    // Load exchange rates
+    fetch('/api/rates')
+      .then(r => r.json())
+      .then(data => {
+        if (data?.rates) setRates(data.rates);
+      })
+      .catch(err => console.error('[Rates] Failed to load:', err));
   }, []);
 
   useEffect(() => {
@@ -77,7 +94,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, rates }}>
       {children}
     </LanguageContext.Provider>
   );

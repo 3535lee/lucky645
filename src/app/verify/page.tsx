@@ -7,7 +7,7 @@ import { formatDate, formatPrize } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function VerifyPage() {
-  const { t, language } = useLanguage();
+  const { t, language, rates } = useLanguage();
   const [numbers, setNumbers] = useState<string[]>(['', '', '', '', '', '']);
   const [results, setResults] = useState<WinningResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -177,9 +177,9 @@ export default function VerifyPage() {
                             </span>
                           </div>
                           <div className={`text-${color}-700 text-sm`}>
-                            {result.prizeType === '1등' && t('verify.prize_first').replace('{count}', result.matchedNumbers.toString()).replace('{amount}', formatPrize(result.prizeAmount, language))}
-                            {result.prizeType === '2등' && t('verify.prize_second').replace('{count}', result.matchedNumbers.toString()).replace('{amount}', formatPrize(result.prizeAmount, language))}
-                            {result.prizeType === '3등' && t('verify.prize_third').replace('{count}', result.matchedNumbers.toString()).replace('{amount}', formatPrize(result.prizeAmount, language))}
+                            {result.prizeType === '1등' && t('verify.prize_first').replace('{count}', result.matchedNumbers.toString()).replace('{amount}', formatPrize(result.prizeAmount, language, rates))}
+                            {result.prizeType === '2등' && t('verify.prize_second').replace('{count}', result.matchedNumbers.toString()).replace('{amount}', formatPrize(result.prizeAmount, language, rates))}
+                            {result.prizeType === '3등' && t('verify.prize_third').replace('{count}', result.matchedNumbers.toString()).replace('{amount}', formatPrize(result.prizeAmount, language, rates))}
                           </div>
                         </div>
                         <span className={`text-${color}-600 text-sm`}>

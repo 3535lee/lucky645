@@ -45,7 +45,21 @@ export function perWinnerAmount(totalAmount: number, winners: number): number {
   return Math.floor(totalAmount / winners);
 }
 
-export function formatPrize(amount: number, language: string = 'ko'): string {
+interface ExchangeRate {
+  unit: number;
+  krw_per_unit: number;
+}
+
+// Convert KRW amount to target currency using "현찰 사실때" (buying) rate
+// rate.krw_per_unit = KRW for `rate.unit` of target currency
+// e.g. USD: unit=1, krw_per_unit=1541.81 → 1 USD = 1541.81 KRW
+// e.g. IDR: unit=100, krw_per_unit=9.32 → 100 IDR = 9.32 KRW
+function convertKrw(krwAmount: number, rate: ExchangeRate): number {
+  if (!rate || !rate.krw_per_unit) return krwAmount;
+  return (krwAmount * rate.unit) / rate.krw_per_unit;
+}
+
+export function formatPrize(amount: number, language: string = 'ko', rates?: Record<string, ExchangeRate>): string {
   if (language === 'ko') {
     if (amount >= 100000000) {
       return `${Math.floor(amount / 100000000)}억${amount % 100000000 ? Math.floor((amount % 100000000) / 10000) + '만' : ''}원`;
@@ -54,13 +68,23 @@ export function formatPrize(amount: number, language: string = 'ko'): string {
       return `${Math.floor(amount / 10000)}만원`;
     }
     return `${amount.toLocaleString()}원`;
-  } else {
-    // For English and Indonesian, use KRW format
-    return `${amount.toLocaleString()} KRW`;
   }
+
+  if (language === 'en' && rates?.USD) {
+    const usd = convertKrw(amount, rates.USD);
+    return `$${Math.round(usd).toLocaleString('en-US')}`;
+  }
+
+  if (language === 'id' && rates?.IDR) {
+    const idr = convertKrw(amount, rates.IDR);
+    return `Rp ${Math.round(idr).toLocaleString('id-ID')}`;
+  }
+
+  // Fallback to KRW if no rate available
+  return `${amount.toLocaleString()} KRW`;
 }
 
-export function formatPrizeShort(amount: number, language: string = 'ko'): string {
+export function formatPrizeShort(amount: number, language: string = 'ko', rates?: Record<string, ExchangeRate>): string {
   if (language === 'ko') {
     if (amount >= 100000000) {
       const billions = Math.floor(amount / 100000000);
@@ -74,31 +98,28 @@ export function formatPrizeShort(amount: number, language: string = 'ko'): strin
       return `${Math.floor(amount / 10000)}만`;
     }
     return `${Math.floor(amount / 1000)}천`;
-  } else if (language === 'id') {
-    // Indonesian format: rb (ribu), jt (juta), M (miliar)
-    if (amount >= 1000000000) {
-      return `${(amount / 1000000000).toFixed(1)}M KRW`;
-    }
-    if (amount >= 1000000) {
-      return `${(amount / 1000000).toFixed(1)}jt KRW`;
-    }
-    if (amount >= 1000) {
-      return `${(amount / 1000).toFixed(0)}rb KRW`;
-    }
-    return `${amount} KRW`;
-  } else {
-    // For English, use K, M, B format
-    if (amount >= 1000000000) {
-      return `${(amount / 1000000000).toFixed(1)}B KRW`;
-    }
-    if (amount >= 1000000) {
-      return `${(amount / 1000000).toFixed(1)}M KRW`;
-    }
-    if (amount >= 1000) {
-      return `${(amount / 1000).toFixed(0)}K KRW`;
-    }
-    return `${amount} KRW`;
   }
+
+  if (language === 'en' && rates?.USD) {
+    const usd = convertKrw(amount, rates.USD);
+    if (usd >= 1000000) return `$${(usd / 1000000).toFixed(1)}M`;
+    if (usd >= 1000) return `$${(usd / 1000).toFixed(0)}K`;
+    return `$${Math.round(usd)}`;
+  }
+
+  if (language === 'id' && rates?.IDR) {
+    const idr = convertKrw(amount, rates.IDR);
+    if (idr >= 1000000000) return `Rp ${(idr / 1000000000).toFixed(1)}M`; // miliar
+    if (idr >= 1000000) return `Rp ${(idr / 1000000).toFixed(1)}jt`; // juta
+    if (idr >= 1000) return `Rp ${(idr / 1000).toFixed(0)}rb`; // ribu
+    return `Rp ${Math.round(idr)}`;
+  }
+
+  // Fallback
+  if (amount >= 1000000000) return `${(amount / 1000000000).toFixed(1)}B KRW`;
+  if (amount >= 1000000) return `${(amount / 1000000).toFixed(1)}M KRW`;
+  if (amount >= 1000) return `${(amount / 1000).toFixed(0)}K KRW`;
+  return `${amount} KRW`;
 }
 
 export function formatDate(dateString: string, language: string = 'ko'): string {
