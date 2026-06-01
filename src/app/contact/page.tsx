@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function ContactPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     platform: '',
@@ -200,6 +200,12 @@ export default function ContactPage() {
         <ul className="text-yellow-700 dark:text-yellow-300 space-y-1 text-sm">
           <li>{t('contact.info_response')}</li>
           <li>{t('contact.info_purchase')}</li>
+          {language !== 'ko' && (
+            <>
+              <li>{t('contact.info_cost')}</li>
+              <li>{t('contact.info_tax')}</li>
+            </>
+          )}
         </ul>
       </div>
     </div>

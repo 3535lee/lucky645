@@ -124,6 +124,8 @@
     "error_send_failed": "Failed to send message.",
     "info_title": "📝 Information",
     "info_response": "• We will respond within 24 hours",
-    "info_purchase": "• Purchase-related inquiries are welcome"
+    "info_purchase": "• Purchase-related inquiries are welcome",
+    "info_cost": "• Cost per game ticket is $4",
+    "info_tax": "• Prize amounts shown do not include taxes, fees, or transfer charges"
   }
 }

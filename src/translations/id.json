@@ -124,6 +124,8 @@
     "error_send_failed": "Gagal mengirim pesan.",
     "info_title": "📝 Informasi",
     "info_response": "• Kami akan merespons dalam 24 jam",
-    "info_purchase": "• Pertanyaan terkait pembelian sangat diterima"
+    "info_purchase": "• Pertanyaan terkait pembelian sangat diterima",
+    "info_cost": "• Biaya per tiket permainan adalah Rp 70.000",
+    "info_tax": "• Jumlah hadiah belum dipotong pajak, biaya, dan biaya transfer"
   }
 }
