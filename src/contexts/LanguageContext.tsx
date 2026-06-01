@@ -36,10 +36,16 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   const [rates, setRates] = useState<Record<string, ExchangeRate>>({});
 
   useEffect(() => {
-    // Load saved language from localStorage
+    // Priority order: localStorage (user's explicit choice) > cookie (set by middleware
+    // from IP geo) > default 'ko'
     const savedLanguage = localStorage.getItem('language') as Language;
     if (savedLanguage && ['ko', 'en', 'id'].includes(savedLanguage)) {
       setLanguageState(savedLanguage);
+      return;
+    }
+    const cookieMatch = document.cookie.match(/(?:^|; )language=([^;]+)/);
+    if (cookieMatch && ['ko', 'en', 'id'].includes(cookieMatch[1])) {
+      setLanguageState(cookieMatch[1] as Language);
     }
   }, []);
 
