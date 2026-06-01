@@ -80,7 +80,8 @@ export async function scrapeFromNaver(drawNumber: number): Promise<ScrapedLottoD
     siblings.each((__, sib) => {
       const label = $(sib).find('td').first().text().trim();
       const value = $(sib).find('td').last().text().trim();
-      if (label === '당첨 복권수') winners = parseNum(value);
+      // Newer rounds use '당첨 복권수', older rounds use '당첨게임 수'
+      if (label === '당첨 복권수' || label === '당첨게임 수') winners = parseNum(value);
     });
 
     if (grade === '1등') { firstPrizeAmount = total; firstPrizeWinners = winners; }
