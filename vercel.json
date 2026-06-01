@@ -1,5 +1,5 @@
 {
-  "regions": ["icn1"],
+  "regions": ["sin1"],
   "crons": [
     {
       "path": "/api/update-lotto",
