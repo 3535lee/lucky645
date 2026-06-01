@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function ContactPage() {
@@ -14,6 +14,15 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Pre-fill message from sessionStorage (set by recommend page when ordering selected numbers)
+    const prefill = sessionStorage.getItem('contact_prefill_message');
+    if (prefill) {
+      setFormData(prev => ({ ...prev, message: prefill }));
+      sessionStorage.removeItem('contact_prefill_message');
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

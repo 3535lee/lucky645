@@ -46,7 +46,7 @@
     "cta_headline": "Siapa pemenang minggu depan?",
     "cta_highlight": "Mungkin ANDA?",
     "cta_subtext": "Jangan hanya bermimpi — wujudkan sekarang.",
-    "cta_button": "Pesan Nomor Anda Sekarang"
+    "cta_button": "Dapatkan Nomor Keberuntungan Anda"
   },
   "lookup": {
     "title": "Riwayat Pemenang Lotto Korea 6/45",
@@ -96,6 +96,9 @@
     "note_disclaimer": "※ Nomor yang dihasilkan adalah kombinasi yang belum pernah menang hadiah utama di masa lalu",
     "note_no_guarantee": "※ Kemenangan di masa depan tidak dijamin",
     "copy_success": "Nomor disalin ke clipboard!",
+    "order_selected": "Pesan Nomor yang Dipilih",
+    "select_at_least_one": "Silakan pilih setidaknya satu set nomor",
+    "order_message_prefix": "Saya ingin memesan nomor berikut:",
     "generation_failed": "Rekomendasi nomor gagal.",
     "generation_timeout": "Pembuatan nomor memakan waktu lebih lama dari yang diharapkan. Silakan coba lagi.",
     "button_retry": "Coba Lagi",

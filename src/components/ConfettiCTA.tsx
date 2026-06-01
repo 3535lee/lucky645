@@ -98,7 +98,7 @@ export default function ConfettiCTA() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
-            href="/contact"
+            href="/recommend"
             onClick={replay}
             className="inline-block bg-white text-purple-700 font-bold text-lg md:text-xl px-8 py-4 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-200 hover:bg-yellow-300"
           >

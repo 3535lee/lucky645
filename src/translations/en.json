@@ -46,7 +46,7 @@
     "cta_headline": "Who will be next week's winner?",
     "cta_highlight": "Could it be YOU?",
     "cta_subtext": "Don't just dream it — make it happen.",
-    "cta_button": "Order Your Numbers Now"
+    "cta_button": "Get Your Lucky Numbers"
   },
   "lookup": {
     "title": "Korean Lotto 6/45 Winning Records",
@@ -96,6 +96,9 @@
     "note_disclaimer": "※ Generated numbers are combinations that have never won 1st prize in the past",
     "note_no_guarantee": "※ Future winnings are not guaranteed",
     "copy_success": "Numbers copied to clipboard!",
+    "order_selected": "Order Selected Numbers",
+    "select_at_least_one": "Please select at least one set of numbers",
+    "order_message_prefix": "I would like to order the following numbers:",
     "generation_failed": "Number recommendation failed.",
     "generation_timeout": "Number generation is taking longer than expected. Please try again.",
     "button_retry": "Retry",
