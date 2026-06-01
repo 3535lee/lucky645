@@ -198,6 +198,7 @@ export default function ContactPage() {
       <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-6">
         <h3 className="text-lg font-bold text-yellow-800 dark:text-yellow-200 mb-3">{t('contact.info_title')}</h3>
         <ul className="text-yellow-700 dark:text-yellow-300 space-y-1 text-sm">
+          {language !== 'ko' && <li>{t('contact.info_about')}</li>}
           <li>{t('contact.info_response')}</li>
           <li>{t('contact.info_purchase')}</li>
           {language !== 'ko' && (
