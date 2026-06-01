@@ -43,9 +43,17 @@ async function scrapeFromNaver(drawNumber: number): Promise<ScrapedLottoData | n
   const html = await response.text();
   const $ = cheerio.load(html);
 
+  // Verify the displayed round matches what we requested
+  const pageText = $.html();
+  const roundMatch = pageText.match(/(\d+)회차\s*\(/);
+  if (roundMatch && parseInt(roundMatch[1]) !== drawNumber) {
+    console.log(`[Scraper] Round mismatch: requested ${drawNumber}, page shows ${roundMatch[1]}`);
+    return null;
+  }
+
   const balls = $('.winning_number .ball');
   if (balls.length !== 6) {
-    console.log(`[Scraper] No winning numbers found for round ${drawNumber}`);
+    console.log(`[Scraper] No winning numbers found for round ${drawNumber} (found ${balls.length} balls)`);
     return null;
   }
 
@@ -61,6 +69,39 @@ async function scrapeFromNaver(drawNumber: number): Promise<ScrapedLottoData | n
   const firstPrizeAmount = prizeMatch ? parseInt(prizeMatch[1].replace(/,/g, '')) : 0;
   const firstPrizeWinners = winnersMatch ? parseInt(winnersMatch[1]) : 0;
 
+  // Parse 2nd/3rd prize from the prize amount table
+  let secondPrizeAmount = 0;
+  let secondPrizeWinners = 0;
+  let thirdPrizeAmount = 0;
+  let thirdPrizeWinners = 0;
+
+  const parseNum = (s: string) => parseInt(s.replace(/[,개원\s]/g, '')) || 0;
+
+  $('th[scope="row"]').each((_, th) => {
+    const grade = $(th).text().trim();
+    if (grade !== '2등' && grade !== '3등') return;
+
+    const row = $(th).closest('tr');
+    const siblings = row.nextUntil('tr.first_line');
+    let winners = 0;
+    let perPrize = 0;
+
+    siblings.each((__, sib) => {
+      const label = $(sib).find('td').first().text().trim();
+      const value = $(sib).find('td').last().text().trim();
+      if (label === '당첨 복권수') winners = parseNum(value);
+      if (label === '1개당 당첨금') perPrize = parseNum(value);
+    });
+
+    if (grade === '2등') {
+      secondPrizeAmount = perPrize;
+      secondPrizeWinners = winners;
+    } else {
+      thirdPrizeAmount = perPrize;
+      thirdPrizeWinners = winners;
+    }
+  });
+
   return {
     draw_number: drawNumber,
     draw_date: getDrawDate(drawNumber),
@@ -73,10 +114,10 @@ async function scrapeFromNaver(drawNumber: number): Promise<ScrapedLottoData | n
     bonus_number: bonusNumber,
     first_prize_amount: firstPrizeAmount,
     first_prize_winners: firstPrizeWinners,
-    second_prize_amount: Math.floor(firstPrizeAmount * 0.75),
-    second_prize_winners: 0,
-    third_prize_amount: 1500000,
-    third_prize_winners: 0
+    second_prize_amount: secondPrizeAmount,
+    second_prize_winners: secondPrizeWinners,
+    third_prize_amount: thirdPrizeAmount,
+    third_prize_winners: thirdPrizeWinners
   };
 }
 

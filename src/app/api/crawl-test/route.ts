@@ -27,5 +27,6 @@ export async function GET() {
 }
 
 export async function POST() {
-  return GET(); // Allow both GET and POST for testing
+  return GET();
 }
+
