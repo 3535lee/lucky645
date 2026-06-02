@@ -38,11 +38,11 @@ export default function Navigation() {
             <Link href="/lookup" className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/lookup')}`}>
               {t('navigation.lookup')}
             </Link>
-            <Link href="/verify" className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/verify')}`}>
-              {t('navigation.verify')}
-            </Link>
             <Link href="/recommend" className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/recommend')}`}>
               {t('navigation.recommend')}
+            </Link>
+            <Link href="/verify" className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/verify')}`}>
+              {t('navigation.verify')}
             </Link>
             <Link href="/contact" className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/contact')}`}>
               {t('navigation.contact')}
@@ -82,19 +82,19 @@ export default function Navigation() {
             >
               {t('navigation.lookup')}
             </Link>
-            <Link 
-              href="/verify" 
-              onClick={closeMobileMenu}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/verify')}`}
-            >
-              {t('navigation.verify')}
-            </Link>
-            <Link 
-              href="/recommend" 
+            <Link
+              href="/recommend"
               onClick={closeMobileMenu}
               className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/recommend')}`}
             >
               {t('navigation.recommend')}
+            </Link>
+            <Link
+              href="/verify"
+              onClick={closeMobileMenu}
+              className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/verify')}`}
+            >
+              {t('navigation.verify')}
             </Link>
             <Link 
               href="/contact" 
