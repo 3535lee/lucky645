@@ -172,12 +172,12 @@ export default function RecommendPage() {
                     : 'border-gray-200 dark:border-gray-700'
                 }`}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div className="flex flex-col gap-3 flex-1">
-                    <span className="text-lg font-bold text-gray-700 dark:text-gray-300 text-center sm:text-left">
+                <div className={`flex sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${orderMode ? 'flex-row items-center justify-between gap-2' : 'flex-col gap-4'}`}>
+                  <div className="flex flex-col gap-3 flex-1 min-w-0">
+                    <span className={`text-lg font-bold text-gray-700 dark:text-gray-300 sm:text-left ${orderMode ? 'text-left' : 'text-center'}`}>
                       {t('recommend.recommendation_number').replace('{number}', (index + 1).toString())}
                     </span>
-                    <div className="flex flex-wrap gap-2 md:gap-3 justify-center sm:justify-start max-w-sm md:max-w-lg mx-auto sm:mx-0">
+                    <div className={`flex flex-wrap md:gap-3 sm:justify-start max-w-sm md:max-w-lg sm:mx-0 ${orderMode ? 'gap-1.5 sm:gap-2 justify-start' : 'gap-2 justify-center mx-auto'}`}>
                       {numbers.map((number, numIndex) => (
                         <LottoBall key={numIndex} number={number} size="xxl" />
                       ))}
