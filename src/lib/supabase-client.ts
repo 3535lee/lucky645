@@ -93,6 +93,24 @@ export async function getLottoResults(page = 1, limit = 20) {
   return { data: mappedData, count: count || 0 };
 }
 
+// Latest (most recent) draw's round number and date.
+export async function getLatestRoundInfo(): Promise<{ round: number; date: string } | null> {
+  const { data, error } = await supabase
+    .from('lotto_results')
+    .select('draw_number, draw_date')
+    .order('draw_number', { ascending: false })
+    .limit(1)
+    .single();
+
+  if (error) {
+    throw new Error(`Failed to fetch latest round: ${error.message}`);
+  }
+  if (!data) return null;
+
+  const row = data as { draw_number: number; draw_date: string };
+  return { round: row.draw_number, date: row.draw_date };
+}
+
 export type WinningResult = {
   round: number;
   date: string;
