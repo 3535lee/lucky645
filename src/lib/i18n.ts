@@ -36,6 +36,8 @@ export type Dictionary = {
       };
     };
     ballColors: string;
+    draw_video: string;
+    draw_video_desc: string;
   };
   lookup: {
     title: string;
@@ -132,7 +134,9 @@ const dictionaries: Record<Locale, Dictionary> = {
           description: '텔레그램으로 문의사항을 보내세요'
         }
       },
-      ballColors: '로또 6/45 번호별 색상'
+      ballColors: '로또 6/45 번호별 색상',
+      draw_video: '추첨 영상',
+      draw_video_desc: '제{round}회 로또 6/45 추첨 실황'
     },
     lookup: {
       title: '로또 6/45 당첨번호 조회',
@@ -235,7 +239,9 @@ const dictionaries: Record<Locale, Dictionary> = {
           description: 'Send inquiries via Telegram'
         }
       },
-      ballColors: 'Lotto 6/45 Number Colors'
+      ballColors: 'Lotto 6/45 Number Colors',
+      draw_video: 'Draw Video',
+      draw_video_desc: 'Lotto 6/45 Round {round} live draw'
     },
     lookup: {
       title: 'Lotto 6/45 Winning Numbers',
@@ -338,7 +344,9 @@ const dictionaries: Record<Locale, Dictionary> = {
           description: 'Kirim pertanyaan melalui Telegram'
         }
       },
-      ballColors: 'Warna Nomor Lotto 6/45'
+      ballColors: 'Warna Nomor Lotto 6/45',
+      draw_video: 'Video Undian',
+      draw_video_desc: 'Siaran langsung undian Lotto 6/45 Putaran {round}'
     },
     lookup: {
       title: 'Nomor Pemenang Lotto 6/45',

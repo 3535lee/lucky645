@@ -34,6 +34,7 @@ export type LottoResult = {
   second_winners: number;
   third_prize: number;
   third_winners: number;
+  video_id: string | null;
 };
 
 type SupabaseRow = {
@@ -53,6 +54,7 @@ type SupabaseRow = {
   second_prize_amount: number;
   third_prize_winners: number;
   third_prize_amount: number;
+  video_id: string | null;
 };
 
 function mapSupabaseRowToLottoResult(row: SupabaseRow): LottoResult {
@@ -72,6 +74,7 @@ function mapSupabaseRowToLottoResult(row: SupabaseRow): LottoResult {
     second_winners: row.second_prize_winners,
     third_prize: row.third_prize_amount,
     third_winners: row.third_prize_winners,
+    video_id: row.video_id ?? null,
   };
 }
 
@@ -159,6 +162,15 @@ export async function checkWinningNumbers(numbers: number[]) {
     num5: row.number5 as number,
     num6: row.number6 as number,
   }));
+}
+
+export function getServiceRoleClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) {
+    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY or SUPABASE_URL');
+  }
+  return createClient(url, key);
 }
 
 export async function getAllWinningCombinations(): Promise<number[][]> {

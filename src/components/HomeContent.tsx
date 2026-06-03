@@ -22,6 +22,7 @@ interface LottoResult {
   second_winners: number;
   third_prize: number;
   third_winners: number;
+  video_id: string | null;
 }
 
 interface HomeContentProps {
@@ -170,6 +171,28 @@ export default function HomeContent({ latestResult, databaseError }: HomeContent
         <section className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border border-gray-200 dark:border-gray-700">
           <div className="text-center">
             <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.data_loading')}</p>
+          </div>
+        </section>
+      )}
+
+      {latestResult?.video_id && (
+        <section className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-8 shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="text-center mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              {t('home.draw_video')}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              {t('home.draw_video_desc').replace('{round}', latestResult.round.toString())}
+            </p>
+          </div>
+          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+            <iframe
+              className="absolute top-0 left-0 w-full h-full rounded-lg"
+              src={`https://www.youtube.com/embed/${latestResult.video_id}`}
+              title={t('home.draw_video')}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </section>
       )}

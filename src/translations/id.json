@@ -46,7 +46,9 @@
     "cta_headline": "Siapa pemenang berikutnya?",
     "cta_highlight": "Mungkin ANDA?",
     "cta_subtext": "Jangan hanya bermimpi — wujudkan sekarang.",
-    "cta_button": "Dapatkan Nomor Keberuntungan Anda"
+    "cta_button": "Dapatkan Nomor Keberuntungan Anda",
+    "draw_video": "Video Undian",
+    "draw_video_desc": "Siaran langsung undian Lotto 6/45 Putaran {round}"
   },
   "lookup": {
     "title": "Riwayat Pemenang Lotto Korea 6/45",

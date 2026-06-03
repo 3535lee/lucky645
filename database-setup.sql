@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS lotto_results (
   third_prize BIGINT NOT NULL DEFAULT 0,
   third_winners INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  video_id TEXT
 );
 
 -- Create indexes for better performance

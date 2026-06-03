@@ -6,6 +6,10 @@
       "schedule": "0 13 * * 6"
     },
     {
+      "path": "/api/update-lotto-video",
+      "schedule": "30 13 * * 6"
+    },
+    {
       "path": "/api/update-rates",
       "schedule": "0 8 * * *"
     }

@@ -46,7 +46,9 @@
     "cta_headline": "Who will be next winner?",
     "cta_highlight": "Could it be YOU?",
     "cta_subtext": "Don't just dream it — make it happen.",
-    "cta_button": "Get Your Lucky Numbers"
+    "cta_button": "Get Your Lucky Numbers",
+    "draw_video": "Draw Video",
+    "draw_video_desc": "Lotto 6/45 Round {round} live draw"
   },
   "lookup": {
     "title": "Korean Lotto 6/45 Winning Records",

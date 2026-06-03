@@ -42,7 +42,9 @@
     "data_loading": "데이터 로딩 중...",
     "footer_latest": "최신 회차: 제{round}회",
     "footer_database": "로또 데이터베이스에 1회부터 {round}회까지 수록",
-    "footer_service": "Lucky645 - 로또 6/45 당첨번호 조회 및 추천 서비스"
+    "footer_service": "Lucky645 - 로또 6/45 당첨번호 조회 및 추천 서비스",
+    "draw_video": "추첨 영상",
+    "draw_video_desc": "제{round}회 로또 6/45 추첨 실황"
   },
   "lookup": {
     "title": "로또 6/45 당첨기록 조회",
