@@ -12,7 +12,7 @@ const PRIZE_TIERS = [
 ];
 
 function LottoBallIllustration({ numbers, size = 'lg' }: { numbers: number[]; size?: 'sm' | 'lg' }) {
-  const ballSize = size === 'lg' ? 'w-12 h-12 text-lg' : 'w-9 h-9 text-sm';
+  const ballSize = size === 'lg' ? 'w-12 h-12 text-lg' : 'w-8 h-8 text-sm';
   const colors = [
     'bg-yellow-400 text-yellow-900',
     'bg-blue-500 text-white',
@@ -22,7 +22,7 @@ function LottoBallIllustration({ numbers, size = 'lg' }: { numbers: number[]; si
     'bg-purple-500 text-white',
   ];
   return (
-    <div className="flex items-center justify-center gap-2 flex-wrap">
+    <div className="flex items-center justify-center gap-1.5 sm:gap-2">
       {numbers.map((n, i) => (
         <div
           key={i}
