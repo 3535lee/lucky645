@@ -8,7 +8,7 @@ import LanguageSelector from '@/components/LanguageSelector';
 
 export default function Navigation() {
   const pathname = usePathname();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
@@ -35,6 +35,11 @@ export default function Navigation() {
             <Link href="/" className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/')}`}>
               {t('navigation.home')}
             </Link>
+            {language !== 'ko' && (
+              <Link href="/about" className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/about')}`}>
+                {t('navigation.about')}
+              </Link>
+            )}
             <Link href="/lookup" className={`px-3 py-2 rounded-md text-sm font-medium ${isActive('/lookup')}`}>
               {t('navigation.lookup')}
             </Link>
@@ -68,15 +73,24 @@ export default function Navigation() {
         {/* Mobile Menu */}
         <div className={`md:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
           <div className="px-4 pt-2 pb-4 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               onClick={closeMobileMenu}
               className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/')}`}
             >
               {t('navigation.home')}
             </Link>
-            <Link 
-              href="/lookup" 
+            {language !== 'ko' && (
+              <Link
+                href="/about"
+                onClick={closeMobileMenu}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/about')}`}
+              >
+                {t('navigation.about')}
+              </Link>
+            )}
+            <Link
+              href="/lookup"
               onClick={closeMobileMenu}
               className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/lookup')}`}
             >
