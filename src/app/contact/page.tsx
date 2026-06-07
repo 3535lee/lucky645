@@ -214,8 +214,10 @@ export default function ContactPage() {
             <>
               <li>{t('contact.info_cost')}</li>
               <li>{t('contact.info_tax')}</li>
+              <li>{t('contact.info_no_claim')}</li>
             </>
           )}
+          <li>{t('contact.info_audience')}</li>
         </ul>
       </div>
     </div>

@@ -147,8 +147,10 @@
     "info_about": "• Lotto 6/45 adalah layanan lotere resmi yang dimulai di Korea Selatan pada Desember 2002, dengan pengundian nomor setiap Sabtu malam",
     "info_response": "• Kami akan merespons dalam 24 jam",
     "info_purchase": "• Pertanyaan terkait pembelian sangat diterima",
-    "info_cost": "• Biaya per tiket permainan adalah Rp 70.000",
-    "info_tax": "• Jumlah hadiah belum dipotong pajak, biaya, dan biaya transfer"
+    "info_cost": "• Biaya per tiket permainan adalah Rp 18.000",
+    "info_tax": "• Jumlah hadiah belum dipotong pajak, biaya, dan biaya transfer (estimasi total 35%)",
+    "info_no_claim": "• Hadiah peringkat 4 dan 5 tidak dapat diklaim",
+    "info_audience": "• Situs ini dioperasikan untuk warga asing yang tinggal di Korea dan diaspora Korea yang tinggal di luar negeri"
   },
   "about": {
     "title": "Apa itu Lotto 6/45?",

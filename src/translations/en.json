@@ -147,8 +147,10 @@
     "info_about": "• Lotto 6/45 is a legal lottery service that started in South Korea in December 2002, with numbers drawn every Saturday evening",
     "info_response": "• We will respond within 24 hours",
     "info_purchase": "• Purchase-related inquiries are welcome",
-    "info_cost": "• Cost per game ticket is $4",
-    "info_tax": "• Prize amounts shown do not include taxes, fees, or transfer charges"
+    "info_cost": "• Cost per game ticket is $1",
+    "info_tax": "• Prize amounts shown do not include taxes, fees, or transfer charges (est total 35%)",
+    "info_no_claim": "• 4th and 5th prizes cannot be claimed",
+    "info_audience": "• This site is operated for foreigners residing in Korea and overseas Koreans living abroad"
   },
   "about": {
     "title": "What is Lotto 6/45?",
