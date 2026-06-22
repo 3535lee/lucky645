@@ -104,6 +104,7 @@
     "subtitle": "Get recommendations for number combinations that have never won 1st prize",
     "button_generate": "Generate Recommended Numbers",
     "button_generating": "Generating...",
+    "option_exclude_second": "Also exclude 2nd-prize combinations",
     "button_new": "Generate New Numbers",
     "recommendation_title": "Recommended Number Combinations",
     "recommendation_number": "Recommendation {number}",

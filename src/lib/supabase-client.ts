@@ -203,20 +203,50 @@ export async function checkWinningNumbers(numbers: number[]): Promise<WinningRes
   return results;
 }
 
-export async function getAllWinningCombinations(): Promise<number[][]> {
-  const data = await fetchAllPaged<{ number1: number; number2: number; number3: number; number4: number; number5: number; number6: number }>(
+export async function getAllWinningCombinations(includeSecondPrize = false): Promise<number[][]> {
+  type CombinationRow = {
+    number1: number;
+    number2: number;
+    number3: number;
+    number4: number;
+    number5: number;
+    number6: number;
+    bonus_number: number;
+  };
+
+  const data = await fetchAllPaged<CombinationRow>(
     'lotto_results',
-    'number1, number2, number3, number4, number5, number6',
+    includeSecondPrize
+      ? 'number1, number2, number3, number4, number5, number6, bonus_number'
+      : 'number1, number2, number3, number4, number5, number6',
     'draw_number',
     true
   );
 
-  return data.map(row => [
-    row.number1 as number, 
-    row.number2 as number, 
-    row.number3 as number, 
-    row.number4 as number, 
-    row.number5 as number, 
-    row.number6 as number
-  ]);
+  const combinations: number[][] = [];
+
+  for (const row of data) {
+    const winningNumbers = [
+      row.number1,
+      row.number2,
+      row.number3,
+      row.number4,
+      row.number5,
+      row.number6,
+    ];
+
+    combinations.push(winningNumbers);
+
+    if (includeSecondPrize) {
+      for (let i = 0; i < winningNumbers.length; i++) {
+        combinations.push([
+          ...winningNumbers.slice(0, i),
+          ...winningNumbers.slice(i + 1),
+          row.bonus_number,
+        ]);
+      }
+    }
+  }
+
+  return combinations;
 }

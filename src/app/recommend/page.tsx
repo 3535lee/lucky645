@@ -44,6 +44,7 @@ export default function RecommendPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isTimeout, setIsTimeout] = useState(false);
+  const [excludeSecondPrize, setExcludeSecondPrize] = useState(false);
 
   // Non-Korean users get the order flow (checkbox + order button + fireworks)
   const orderMode = language !== 'ko';
@@ -60,7 +61,7 @@ export default function RecommendPage() {
       });
 
       const generationPromise = (async () => {
-        const winningCombinations = await getAllWinningCombinations();
+        const winningCombinations = await getAllWinningCombinations(excludeSecondPrize);
         const newRecommendations: number[][] = [];
         for (let i = 0; i < 5; i++) {
           newRecommendations.push(generateNeverWonNumbers(winningCombinations));
@@ -130,6 +131,17 @@ export default function RecommendPage() {
               </div>
             ) : t('recommend.button_generate')}
           </button>
+
+          <label className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={excludeSecondPrize}
+              onChange={(e) => setExcludeSecondPrize(e.target.checked)}
+              disabled={loading}
+              className="h-4 w-4 accent-blue-600 disabled:cursor-not-allowed"
+            />
+            {t('recommend.option_exclude_second')}
+          </label>
 
           <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
             <p>{t('recommend.note_disclaimer')}</p>

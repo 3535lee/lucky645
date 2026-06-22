@@ -99,6 +99,7 @@
     "subtitle": "1등에 당첨된 적이 없는 번호 조합을 추천해드립니다",
     "button_generate": "추천 번호 생성",
     "button_generating": "생성 중...",
+    "option_exclude_second": "2등도 제외하기",
     "button_new": "새로운 번호 생성",
     "recommendation_title": "추천 번호 조합",
     "recommendation_number": "추천 {number}",

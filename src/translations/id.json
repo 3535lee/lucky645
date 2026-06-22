@@ -104,6 +104,7 @@
     "subtitle": "Dapatkan rekomendasi kombinasi nomor yang belum pernah menang hadiah utama",
     "button_generate": "Buat Nomor Rekomendasi",
     "button_generating": "Membuat...",
+    "option_exclude_second": "Kecualikan juga kombinasi hadiah kedua",
     "button_new": "Buat Nomor Baru",
     "recommendation_title": "Kombinasi Nomor Rekomendasi",
     "recommendation_number": "Rekomendasi {number}",
