@@ -16,6 +16,10 @@
     {
       "path": "/api/keepalive",
       "schedule": "0 2 * * 0-5"
+    },
+    {
+      "path": "/api/keepalive-read",
+      "schedule": "0 3 * * *"
     }
   ]
 }
