@@ -15,7 +15,7 @@
     },
     {
       "path": "/api/keepalive",
-      "schedule": "0 2 */3 * *"
+      "schedule": "0 2 * * 0-5"
     }
   ]
 }
